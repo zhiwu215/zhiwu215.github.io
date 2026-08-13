@@ -1,6 +1,5 @@
 +++
 date = '2026-08-13T19:53:10+08:00'
-draft = true
 title = 'Hugo+PaperMod搭建博客'
 +++
 
