@@ -1,0 +1,7 @@
+<!-- Markdown 链接渲染钩子：自动让站外链接在新窗口打开 -->
+<a href="{{ .Destination | safeURL }}"
+  {{- with .Title }} title="{{ . }}"{{ end -}}
+  {{- if strings.HasPrefix .Destination "http" }} target="_blank" rel="noopener noreferrer"{{ end -}}
+>
+  {{- .Text | safeHTML -}}
+</a>
