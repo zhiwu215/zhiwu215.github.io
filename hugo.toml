@@ -48,10 +48,27 @@ enableRobotsTXT = true
   ShowPostNavLinks = true
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
+  comments = true # 全局开启评论功能
 
   # 文章目录 (TOC) 设置
   ShowToc = true
   TocOpen = true
+
+  # Giscus 评论系统配置
+  [params.giscus]
+    repo = "zhiwu215/zhiwu215.github.io" # 你的 GitHub 博客仓库（或专门放 Discussion 的仓库）
+    repoId = "R_kgDOT3OBmA"               # 从 giscus.app 生成获取的 repoId
+    category = "Announcements"            # Discussion 的分类
+    categoryId = "DIC_kwDOT3OBmM4DDSgM"         # 从 giscus.app 生成获取的 categoryId
+    mapping = "pathname"                  # 匹配方式：pathname
+    strict = "0"
+    reactionsEnabled = "1"
+    emitMetadata = "0"
+    inputPosition = "top"
+    lightTheme = "light"                 # 浅色模式对应的 Giscus 主题
+    darkTheme = "dark"                   # 深色模式对应的 Giscus 主题
+    lang = "zh-CN"
+    loading = "lazy"
 
   # 站点图标 (Favicon)
   [params.assets]
