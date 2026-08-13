@@ -1,0 +1,142 @@
+# ==========================================
+# 站点基本信息配置
+# ==========================================
+# 网站根域名
+baseURL = "https://zhiwu.github.io/"
+
+# 网站标题（显示在浏览器标签页和首页 Header）
+title = "知兀的博客"
+
+# 站点区域语言设置（设置 HTML 的 <html lang="zh-cn"> 属性）
+locale = "zh-cn"
+
+# 默认内容语言（Hugo 会自动加载 PaperMod 自带的中文语言包）
+defaultContentLanguage = "zh"
+
+# 开启中日韩（CJK）字符精准统计（解决中文文章字数与预计阅读时间统计偏少的问题）
+hasCJKLanguage = true
+
+# 首页及文章列表页每页显示的文章数量
+paginate = 10
+
+# 自动生成 robots.txt 文件（引导搜索引擎爬虫收录文章，有利于 SEO）
+enableRobotsTXT = true
+
+# 主题导入 (Hugo Module)
+[module]
+  [[module.imports]]
+    path = "github.com/adityatelange/hugo-PaperMod"
+
+# 输出控制（JSON 用于站内搜索）
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+# ==========================================
+# PaperMod 主题自定义参数
+# ==========================================
+[params]
+  env = "production"
+  description = "知兀的个人博客"
+  keywords = ["Blog", "知兀", "PaperMod"]
+  author = "知兀"
+  DateFormat = "2006年01月02日"
+  defaultTheme = "auto"
+
+  # 文章元信息与功能开关
+  ShowReadingTime = true
+  ShowWordCount = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+
+  # 文章目录 (TOC) 设置
+  ShowToc = true
+  TocOpen = true
+
+  # 站点图标 (Favicon)
+  [params.assets]
+    favicon = "/favicon.jpg"
+    favicon16x16 = "/favicon.jpg"
+    favicon32x32 = "/favicon.jpg"
+    apple_touch_icon = "/favicon.jpg"
+
+  # 首页欢迎信息模式 (Home Info)
+  [params.homeInfoParams]
+    Title = "知兀"
+    ImageUrl = "/avatar.jpg"
+    Content = "print(\"Hello, World\")"
+
+  # 社交媒体链接
+  [[params.socialIcons]]
+    name = "bilibili"
+    url = "https://space.bilibili.com/3546704263514722"
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/zhiwu215"
+
+  [[params.socialIcons]]
+    name = "x"
+    url = "https://x.com/zhiwu215"
+
+  [[params.socialIcons]]
+    name = "email"
+    url = "mailto:zhiwu215@gmail.com"
+
+# ==========================================
+# ==========================================
+# 分类法 (Taxonomies) 配置
+# ==========================================
+[taxonomies]
+  tag = "tags"
+  series = "series"
+
+# ==========================================
+# 顶部主导航菜单配置（纯文字，无 Emoji 图标）
+# ==========================================
+[[menu.main]]
+  identifier = "search"
+  name = "搜索"
+  url = "/search/"
+  weight = 1
+
+[[menu.main]]
+  identifier = "series"
+  name = "合集"
+  url = "/series/"
+  weight = 2
+
+[[menu.main]]
+  identifier = "tags"
+  name = "标签"
+  url = "/tags/"
+  weight = 3
+
+[[menu.main]]
+  identifier = "archives"
+  name = "归档"
+  url = "/archives/"
+  weight = 4
+
+[[menu.main]]
+  identifier = "about"
+  name = "关于"
+  url = "/about/"
+  weight = 5
+
+# ==========================================
+# Markdown 与渲染设置
+# ==========================================
+# 使用 CSS 类名控制代码高亮（配合 PaperMod 实现深/浅色模式代码颜色自动切换）
+pygmentsUseClasses = true
+
+[markup]
+  # Goldmark Markdown 渲染器设置
+  [markup.goldmark.renderer]
+    # 允许在 Markdown 中内嵌原生 HTML 代码（如 <br>、居中标签或视频/音频组件）
+    unsafe = true
+
+  # 代码高亮语法器设置 (Chroma)
+  [markup.highlight]
+    # 默认给所有代码块左侧加上 1, 2, 3... 行号
+    lineNos = true
