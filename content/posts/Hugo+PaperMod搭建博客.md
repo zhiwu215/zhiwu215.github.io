@@ -5,9 +5,9 @@ tags = ['hugo', 'giscus', 'typora', '图床']
 series = ['博客搭建']
 +++
 
-# 搭建hugo
+## 基础搭建
 
-## 安装hugo
+### 安装 Hugo
 
 官网：
 
@@ -25,7 +25,7 @@ series = ['博客搭建']
 
 > 我这里使用winget安装
 
-## 创建项目
+### 创建项目与目录结构
 
 官方文档进行说明，不要使用cmd，使用pwsh或者Linux终端
 
@@ -60,7 +60,7 @@ hugo new project <项目名>
 |   themes   | 使用的第三方主题，每个主题都有自己的layouts、static等。使用主题后，hugo先从这里主题加载，再加载自定义的覆盖文件 |
 | hugo.toml  |                   个人博客主题样式配置文件                   |
 
-## 安装主题
+### 引入 PaperMod 主题
 
 这里我使用**PaperMod**
 
@@ -119,7 +119,7 @@ hugo mod get -u
 
 ![image-20260813085642868](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813085642868.png)
 
-## 创建文章
+### 创建文章与本地预览
 
 > [Quick start](https://gohugo.io/getting-started/quick-start/#add-content)
 >
@@ -157,9 +157,9 @@ hugo server -D
 
 ![image-20260813091745659](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813091745659.png)
 
-# 配置PaperMod
+## 站点核心配置与页面
 
-## 完整hugo.toml
+### 完整 hugo.toml 配置文件
 
 > hugo官方的配置，什么主题都通用
 >
@@ -317,7 +317,7 @@ pygmentsUseClasses = true
     lineNos = true
 ```
 
-## 首页欢迎模式
+### 首页欢迎模式
 
 > [adityatelange/hugo-PaperMod: A fast, clean, responsive Hugo theme.](https://github.com/adityatelange/hugo-PaperMod#features-)
 >
@@ -351,7 +351,7 @@ pygmentsUseClasses = true
     url = "mailto:zhiwu215@gmail.com"
 ```
 
-## 导航栏
+### 导航栏配置
 
 > PaperMod官方github仓库的「Wiki」的「FAQs」
 >
@@ -359,7 +359,7 @@ pygmentsUseClasses = true
 
 ![image-20260813132058059](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813132058059.png)
 
-## 归档
+### 归档页面
 
 > PaperMod官方github仓库的「Wiki」的「Feature」
 >
@@ -378,7 +378,7 @@ layout: "archives"
 ---
 ```
 
-## 搜索页面
+### 搜索页面
 
 > [Features · adityatelange/hugo-PaperMod Wiki](https://github.com/adityatelange/hugo-PaperMod/wiki/Features#search-page)
 >
@@ -396,7 +396,7 @@ placeholder: "支持搜索标题、文章、标签等" # 搜索输入框内的�
 ---
 ```
 
-## 自定义taxonomies
+### 自定义 Taxonomies
 
 hugo自带的分类的标签是`categories`和`tags`
 
@@ -429,7 +429,7 @@ series = ["配置博客"]
 ...
 ```
 
-## 关于页面
+### 关于页面
 
 在添加归档页面和搜索页面的时候，直接写上`layout`就可以了，但是关于页面不行
 
@@ -472,7 +472,9 @@ layout: "about"
 这里就可以写一些关于的相关信息了。
 ```
 
-## 字体
+## 更好看（视觉美化）
+
+### 字体 (霞鹜文楷 + JetBrains Mono)
 
 **中文使用霞鹜文楷**
 
@@ -532,7 +534,42 @@ code {
 <link rel="stylesheet" href="https://fontsapi.zeoseven.com/292/main/result.css">
 ```
 
-## 站点图标favicon
+### 盘古之白
+
+参考：[Hugo PaperMod 主题精装修 | Tai's Blog](https://yunpengtai.top/posts/hugo-journey/#盘古之白)
+
+中文和英文以及数字之间有空格会更加便于阅读，使用盘古之白
+
+如果你没加空格，它会自动帮你加。如果你已经手动加了空格，就会直接跳过，什么都不做
+
+>[vinta/pangu.js: Opinionated paranoid text spacing in JavaScript](https://github.com/vinta/pangu.js)
+>
+>这是官方文档的使用说明，使用包管理工具，这是现代前端项目的使用，在代码演示中也使用`import`
+>
+>`<scrpit>`这是**CDN 外部引用**
+>
+>再下面就是展示各种高级功能
+>
+>![image-20260814094856882](../../../blog-img/image-20260814094856882.png)
+
+我的做法是下载到本地使用，根据CDN文件的链接（就是演示里`src`后面的内容），直接把文件下载到**assets/js/**
+
+![image-20260814095850855](../../../blog-img/image-20260814095850855.png)
+
+```html
+<!-- 盘古之白：自动在中英文之间加入空格 -->
+{{- $pangu := resources.Get "js/pangu.umd.js" -}}
+{{- if $pangu -}}
+  <script defer src="{{ $pangu.RelPermalink }}"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      pangu.autoSpacingPage();
+    });
+  </script>
+{{- end -}}
+```
+
+### 站点图标
 
 图片放在**static/**
 
@@ -545,7 +582,7 @@ code {
     apple_touch_icon = "/favicon.jpg"
 ```
 
-## 优化主页个人信息展示
+### 优化主页个人信息展示
 
 参考：[折腾 Hugo PaperMod 主题 - 她和她的猫](https://her-cat.com/posts/2025/10/08/hugo-paper-mod/#优化主页个人信息展示)
 
@@ -699,7 +736,7 @@ code {
     ImageUrl = "/avatar.jpg"
 ```
 
-## **文章列表卡片增加独立 Tag 胶囊**
+### 文章列表卡片增加独立 Tag 胶囊
 
 **layouts/_default/list.html**
 
@@ -869,7 +906,9 @@ code {
 }
 ```
 
-## 侧边目录
+## 更便于阅读
+
+### 侧边悬浮目录
 
 参考：[在PaperMod中引入侧边目录和阅读进度显示 | 周鑫的个人博客](https://www.zhouxin.space/logs/introduce-side-toc-and-reading-percentage-to-papermod/#侧边目录)
 
@@ -1167,7 +1206,7 @@ code {
 }
 ```
 
-## 图片放大
+### 图片点击放大
 
 在[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)这个视频的1:09:00看到的效果，但是up没有详细说明
 
@@ -1245,7 +1284,7 @@ code {
 
 > 我直接从作者的仓库复制粘贴的
 
-## 让站外链接从新窗口打开
+### 站外链接新窗口打开
 
 参考：[魔改PaperMod主题和博客改动 | 梓言堂 - Yuk's Blog](https://blog.yuk7.com/posts/papermod/#二让站外链接从新窗口打开)
 
@@ -1263,7 +1302,9 @@ code {
 </a>
 ```
 
-## Giscus配置评论
+## 评论系统
+
+### Giscus 评论系统
 
 参考：[Hugo + PaperMod + Github Pages 搭建一个完善的个人博客(以 Windows11 为例) | SonnyCalcr's Blog](https://sonnycalcr.github.io/posts/build-a-blog-using-hugo-papermod-github-pages/#配置评论)
 
@@ -1382,7 +1423,7 @@ Giscus是由 `GitHub Discussions` 驱动的评论系统
 </script>
 ```
 
-# Github推送
+## Github自动部署
 
 > 部署在github page的教程：
 >
@@ -1416,7 +1457,7 @@ github仓库名**必须是<你的用户名>.github.io**
 
 部署成功后，就可以访问网站：<你的用户名>.github.io
 
-# PicGo+Github图床
+## PicGo+Github图床
 
 PicGo是图片上传工具，Github充当图床
 
@@ -1432,7 +1473,7 @@ PicGo是图片上传工具，Github充当图床
 
 ![image-20260813193508344](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813193508344.png)
 
-## Typora配置
+### Typora配置
 
 手动上传图片，再粘贴链接太麻烦
 
@@ -1458,7 +1499,7 @@ PicGo是图片上传工具，Github充当图床
 
 ![image-20260813194702944](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813194702944.png)
 
-## Github Action清理孤儿图片
+### GitHub Actions 清理孤儿图片
 
 后续修改/删改文章依旧导致的“孤儿图片”，所以可以在GitHub Actions 中设置自动化清理
 
@@ -1619,13 +1660,11 @@ jobs:
 
 ![image-20260813202101224](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813202101224.png)
 
-使用Obsidian写Hugo博客
-
-# 其他
+## 待办
 
 这里放着我觉得有用，但没有配置的设置
 
-## 数学公式
+### 数学公式
 
 [Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)
 
@@ -1635,19 +1674,19 @@ jobs:
 
 这个博客里有说明，在papermod文档里有提到整合数学公式
 
-## twikoo评论系统
+### Twikoo 评论系统
 
 [Hugo以及PaperMod主题的配置 | 似水](https://blog.lordash.de/post/guide/ff377f87efdbc8bc/#评论系统-twikoo)
 
-## 短代码
+### 短代码
 
 [Hugo以及PaperMod主题的配置 | 似水](https://blog.lordash.de/post/guide/ff377f87efdbc8bc/#shortcode)
 
-## 文章模板
+### 文章模板
 
 [Hugo + PaperMod + Github Pages 搭建一个完善的个人博客 | LFL's Blog](https://lflmlxy.github.io/posts/create-blog/#7-文章模板)
 
-## netlify托管和服务器推送
+### Netlify 托管与服务器推送
 
 [【大学生提高课】3 hexo与hugo博客搭建与github自动化推送和服务器推送_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1fNNreEEDi/?spm_id_from=333.337.search-card.all.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)
 
