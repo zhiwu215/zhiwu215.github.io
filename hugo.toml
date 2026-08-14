@@ -61,6 +61,11 @@ enableGitInfo = true
   ShowToc = true
   TocOpen = true
 
+  # 封面图片设置 (Cover)
+  [params.cover]
+    responsiveImages = false
+    linkFullImages = true
+
   # Giscus 评论系统配置
   [params.giscus]
     repo = "zhiwu215/zhiwu215.github.io" # 你的 GitHub 博客仓库（或专门放 Discussion 的仓库）
