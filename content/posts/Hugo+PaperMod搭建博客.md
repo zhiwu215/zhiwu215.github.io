@@ -974,10 +974,10 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 {{- $lang := .Type -}}
 {{- $attrs := .Attributes -}}
 <div class="code-block-wrapper" {{ if $lang }}data-lang="{{ $lang }}"{{ end }}>
+  {{- highlight .Inner $lang (transform.Remarshal "TOML" $attrs) -}}
   {{- if $lang -}}
   <span class="code-lang-badge">{{ $lang }}</span>
   {{- end -}}
-  {{- highlight .Inner $lang (transform.Remarshal "TOML" $attrs) -}}
 </div>
 ```
 
@@ -997,7 +997,6 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
     position: absolute;
     top: 8px;
     left: 12px; /* 放在左上角，避免与原生右侧复制按钮冲突 */
-    z-index: 2;
     font-size: 12px;
     font-weight: bold;
     color: var(--secondary);
@@ -1325,6 +1324,7 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 /* medium-zoom 图片放大的样式 */
 .medium-zoom-overlay {
   background: rgba(255, 255, 255, 0.5) !important;
+  z-index: 99999 !important;
 }
 .dark .medium-zoom-overlay {
   background: rgba(0, 0, 0, 0.5) !important;
@@ -1338,6 +1338,8 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 }
 .win11 .medium-zoom-image--opened {
   cursor: url(/cursors/zoom-out.svg), default !important;
+  z-index: 100000 !important;
+  position: relative;
 }
 ```
 
