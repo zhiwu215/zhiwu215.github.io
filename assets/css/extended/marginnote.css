@@ -67,6 +67,15 @@ body, .post-single {
   box-sizing: border-box;
 }
 
+.sidenote-block {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.sidenote-block:last-child {
+  margin-bottom: 0;
+}
+
 /* 侧边注前缀标记（自动带上序号） */
 .sidenote::before {
   content: "#" counter(sidenote-counter) " ";

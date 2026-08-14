@@ -1,1 +1,2 @@
-<span class="sidenote-number"><small class="sidenote">{{ .Inner | markdownify }}</small></span>
+<span class="sidenote-number"><small class="sidenote">{{ .Inner | markdownify | replaceRE "(?s)<p>(.*?)</p>" "<span class=\"sidenote-block\">$1</span>" | safeHTML }}</small></span>
+
