@@ -2134,6 +2134,20 @@ jobs:
 
 ![image-20260813202101224](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813202101224.png)
 
+## 文章模板
+
+**archetypes/default.md**
+
+```markdown
++++
+date = '{{ .Date }}'
+title = '{{ replace .File.ContentBaseName "-" " " | title }}'
+summary = ''
+tags = []
+draft = true
++++
+```
+
 ## 待办
 
 这里放着我觉得有用，但没有配置的设置
