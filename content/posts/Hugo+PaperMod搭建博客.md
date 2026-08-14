@@ -1,6 +1,8 @@
 +++
 date = '2026-08-13T19:53:10+08:00'
 title = 'Hugo+PaperMod搭建博客'
+tags = ['hugo', 'giscus', 'typora', '图床']
+series = ['博客搭建']
 +++
 
 # 搭建hugo
@@ -871,6 +873,12 @@ code {
 
 参考：[在PaperMod中引入侧边目录和阅读进度显示 | 周鑫的个人博客](https://www.zhouxin.space/logs/introduce-side-toc-and-reading-percentage-to-papermod/#侧边目录)
 
+原本的侧边目录代码中，如果目录太长，就会出现滚动条，如下：
+
+![image-20260814073128598](../../../blog-img/image-20260814073128598.png)
+
+**我隐藏了滚动条的部分**
+
 **layouts/partials/toc.html**
 
 ```html
@@ -1384,7 +1392,7 @@ Giscus是由 `GitHub Discussions` 驱动的评论系统
 
 > 我看[【大学生提高课】3 hexo与hugo博客搭建与github自动化推送和服务器推送_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1fNNreEEDi/?spm_id_from=333.337.search-card.all.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)20:47说，创建privete仓库存放博客源码，创建public存放构建后的public文件
 >
-> 我觉得没什么必要，博客的源码没有隐藏的必要，所以我就直接创建public仓库了
+> 我觉得博客的源码没有隐藏的必要，所以我就直接创建public仓库了
 >
 > 完全可以看官方文档完成，[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.337.search-card.all.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)这个视频最后的部署阶段也是创建public仓库，然后按照官方文档来，可以参考一下
 
@@ -1430,11 +1438,21 @@ PicGo是图片上传工具，Github充当图床
 
 所以使用typora在里面配置
 
-我并没有配直接上传图片，因为一篇博客不是立刻完成的，图片不一定适合，可能会多次修改，如果直接上传，会导致一些图片用不到却依旧被存入github
+我并没有配直接上传图片，因为一篇博客不是立刻完成的，图片不一定适合，可能会多次修改，如果直接上传，**会导致一些图片用不到却依旧被存入github**
 
-**先选择保存在本地，配置PicGo**
+**先选择保存在本地特定目录，再配置PicGo**
 
-![image-20260813194429608](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813194429608.png)
+![image-20260814074351394](../../../blog-img/image-20260814074351394.png)
+
+> 注意：
+>
+> 编写文章的时候，明明可以在Typora里查看到图片的内容
+>
+> 但是运行博客后，却发现**显示不出来是正常的**
+>
+> Hugo 在执行构建时，会把 `static/` 目录下的所有文件和子目录**原样复制**到 `public/` 目录下。图片不在`public/` 目录，浏览器在加载页面时找不到图片
+>
+> ![image-20260814073314343](../../../blog-img/image-20260814073314343.png)
 
 **写完博客再一键上传图片**
 
