@@ -5,6 +5,14 @@ tags = ['hugo', 'giscus', 'typora', '图床']
 series = ['博客搭建']
 +++
 
+> 提示：
+>
+> 这里面给出的代码都是我第一次配置的使用的，有完全复制别人的代码，也有根据别人的代码改写的
+>
+> 但随着配置的增多，我自己个人使用各种美化的配置和下文的会有所不同
+>
+> 所以按照的[我的仓库中的配置](https://github.com/zhiwu215/zhiwu215.github.io)为准
+
 ## 基础搭建
 
 ### 安装 Hugo
@@ -441,7 +449,7 @@ series = ["配置博客"]
 
 **layout/_default/about.html**
 
-```
+```html
 {{- define "main" }}
 
 <header class="page-header">
@@ -479,6 +487,13 @@ layout: "about"
 **中文使用霞鹜文楷**
 
 ![image-20260813151909776](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813151909776.png)
+
+**layouts/partials/extend_head.html**
+
+```html
+<!-- 引入 霞鹜文楷 (LXGW WenKai) CDN 字体 -->
+<link rel="stylesheet" href="https://fontsapi.zeoseven.com/292/main/result.css">
+```
 
 **英文字体使用JetBrains Mono**
 
@@ -525,13 +540,6 @@ code {
     font-size: 1rem;
     line-height: 1.2;
 }
-```
-
-**layouts/partials/extend_head.html**
-
-```html
-<!-- 引入 霞鹜文楷 (LXGW WenKai) CDN 字体 -->
-<link rel="stylesheet" href="https://fontsapi.zeoseven.com/292/main/result.css">
 ```
 
 ### 盘古之白
@@ -586,7 +594,7 @@ code {
 
 ```toml
 [params]
-	[params.assets]
+  [params.assets]
     favicon = "/favicon.jpg"
     favicon16x16 = "/favicon.jpg"
     favicon32x32 = "/favicon.jpg"
@@ -596,6 +604,10 @@ code {
 ### 优化主页个人信息展示
 
 参考：[折腾 Hugo PaperMod 主题 - 她和她的猫](https://her-cat.com/posts/2025/10/08/hugo-paper-mod/#优化主页个人信息展示)
+
+演示：
+
+![image-20260814133809900](../../../blog-img/image-20260814133809900.png)
 
 **layouts/partials/home_info.html**
 
@@ -747,7 +759,39 @@ code {
     ImageUrl = "/avatar.jpg"
 ```
 
+### 消除html代码块误判
+
+Hugo 自带的配色方案是 Chroma，PaperMod 用的 highlight.js，我继续用Chroma
+
+Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if ... }}`）或正则匹配式时，纯 HTML 解析器会将其误判为语法错误，如图：
+
+![image-20260814124603665](../../../blog-img/image-20260814124603665.png)
+
+**assets/css/extended/blank.css**
+
+```css
+/* 消除 Hugo Chroma 代码块高亮误判的语法错误红底警告（兼顾内联 style 与 CSS Class） */
+.post-content span[style*="background-color:#1e0010"],
+.post-content span[style*="background-color: #1e0010"],
+.chroma .err {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+```
+
+**hugo.toml**
+
+```toml
+  [markup.highlight]
+    # 使用 CSS 类名控制代码高亮（避免硬编码内联样式 style="background-color:..."）
+    noClasses = false
+```
+
 ### 文章列表卡片增加独立 Tag 胶囊
+
+演示：
+
+![image-20260814133754063](../../../blog-img/image-20260814133754063.png)
 
 **layouts/_default/list.html**
 
@@ -917,17 +961,68 @@ code {
 }
 ```
 
+### 代码块语言标签
+
+展示：
+
+![image-20260814143138951](../../../blog-img/image-20260814143138951.png)
+
+**layouts/_default/_markup/render-codeblock.html**
+
+```html
+{{- $lang := .Type -}}
+{{- $attrs := .Attributes -}}
+<div class="code-block-wrapper" {{ if $lang }}data-lang="{{ $lang }}"{{ end }}>
+  {{- if $lang -}}
+  <span class="code-lang-badge">{{ $lang }}</span>
+  {{- end -}}
+  {{- highlight .Inner $lang (transform.Remarshal "TOML" $attrs) -}}
+</div>
+```
+
+**assets/css/extended/blank.css**
+
+```css
+/* ==========================================
+   代码块语言标签 (Language Badge)
+   ========================================== */
+/* 代码块外层容器 */
+.code-block-wrapper {
+    position: relative;
+    margin-bottom: var(--content-gap);
+}
+/* 标签样式绝对定位 */
+.code-lang-badge {
+    position: absolute;
+    top: 8px;
+    left: 12px; /* 放在左上角，避免与原生右侧复制按钮冲突 */
+    z-index: 2;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--secondary);
+    background: var(--tertiary);
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase; /* 转大写字母 */
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.8;
+}
+/* 动态内边距：仅当容器存在 data-lang 属性时才下压空间，防止纯文本代码块顶部多出空白 */
+.code-block-wrapper[data-lang] .highlight pre {
+    padding-top: 34px !important;
+}
+```
+
 ## 更便于阅读
 
 ### 侧边悬浮目录
 
-参考：[在PaperMod中引入侧边目录和阅读进度显示 | 周鑫的个人博客](https://www.zhouxin.space/logs/introduce-side-toc-and-reading-percentage-to-papermod/#侧边目录)
+参考：[在PaperMod中引入侧边目录和阅读进度显示 | 周鑫的个人博客](https://www.zhouxin.space/logs/introduce-side-toc-and-reading-percentage-to-papermod/#侧边目录){{< marginnote >}}原代码如果目录太长会出现滚动条，而且当页面滚动到某标题时，该目录项的字体瞬间放大 1.1 倍，导致布局抖动{{< /marginnote >}}
 
-原本的侧边目录代码中，如果目录太长，就会出现滚动条，如下：
+演示：
 
-![image-20260814073128598](../../../blog-img/image-20260814073128598.png)
-
-**我隐藏了滚动条的部分**
+![image-20260814133736606](../../../blog-img/image-20260814133736606.png)
 
 **layouts/partials/toc.html**
 
@@ -1219,23 +1314,9 @@ code {
 
 ### 图片点击放大
 
-旁注
+参考：在[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)这个视频的1:09:00看到的效果，但是up没有详细说明，所以我从他的[github仓库](https://github.com/sonnycalcr/sonnycalcr.github.io)抄的{{< marginnote >}}使用叫做 **`medium-zoom`** 的 JavaScript 库，—点击后在原地放大背景变白，再点一下就缩小，我比较喜欢这个精简的功能
 
-通过引入 Fancybox 来实现图片放大和拖拽，Fancybox 就是那个提供“放大、拖拽、左右滑动”等特效的 JavaScript 库
-
-对方使用Hugo的**Shortcode（短代码）** 的语法，
-
-如果你照搬他的代码，你以后写文章时插入图片就不能用 Markdown 原生的 `![图片](链接)` 了，而是必须写成`{{< figure src="图片链接" >}}`
-
-
-
-使用叫做 **`medium-zoom`** 的 JavaScript 库，—点击后在原地放大背景变白，再点一下就缩小。**它本身就不具备拖拽、相册模式（左右切换）等复杂功能**
-
-
-
-在[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)这个视频的1:09:00看到的效果，但是up没有详细说明
-
-所以我从他的[github仓库](https://github.com/sonnycalcr/sonnycalcr.github.io)抄的
+我还看了[这个博客](https://yunpengtai.top/posts/hugo-journey/#图片点击放大)，通过引入Fancybox这个提供“放大、拖拽、左右滑动”等特效的 JavaScript 库 来实现图片放大和拖拽，不过是使用Hugo的**Shortcode（短代码）** 实现的，插入图片时不能用md原生的语法{{< /marginnote >}}
 
 **blank.css**
 
@@ -1301,7 +1382,7 @@ code {
 
 **static/cursors**
 
-放大和缩小的svg图标
+存放放大和缩小的svg图标
 
 官网：
 
@@ -1320,10 +1401,10 @@ code {
 ```html
 <!-- 让站外链接统统是新窗口打开 -->
 <a href="{{ .Destination | safeURL }}"
-  {{- with .Title }} title="{{ . }}"{{ end -}}
-  {{- if not (in .Destination "yuk7.com") }} target="_blank"{{ end -}}
+  {{- with .Title }} title="{{ . }}"{{ end -}}
+  {{- if not (in .Destination "yuk7.com") }} target="_blank"{{ end -}}
 >
-  {{- with .Text | safeHTML }}{{ . }}{{ end -}}
+  {{- with .Text | safeHTML }}{{ . }}{{ end -}}
 </a>
 ```
 
@@ -1333,7 +1414,11 @@ code {
 
 但对方的代码存在一些问题，更新时间是需要自己手动设置的，不合理
 
-> 官方文档
+演示：
+
+![image-20260814133658626](../../../blog-img/image-20260814133658626.png)
+
+> 参数说明：
 >
 > Docs->Configuration->All settings
 >
@@ -1389,10 +1474,14 @@ enableGitInfo = true
 
 参考：[Hugo PaperMod 主题精装修 | Tai's Blog](https://yunpengtai.top/posts/hugo-journey/#marginnote)
 
+演示：
+
+![image-20260814133624664](../../../blog-img/image-20260814133624664.png)
+
 **layouts/shortcodes/marginnote.html**
 
 ```html
-<span class="sidenote-number"><small class="sidenote">{{ .Inner | markdownify }}</small></span>
+<span class="sidenote-number"><small class="sidenote">{{ .Inner | markdownify | replaceRE "(?s)<p>(.*?)</p>" "<span class=\"sidenote-block\">$1</span>" | safeHTML }}</small></span>
 ```
 
 **assets/css/extended/marginnote.css**
@@ -1467,6 +1556,15 @@ body, .post-single {
   box-sizing: border-box;
 }
 
+.sidenote-block {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.sidenote-block:last-child {
+  margin-bottom: 0;
+}
+
 /* 侧边注前缀标记（自动带上序号） */
 .sidenote::before {
   content: "#" counter(sidenote-counter) " ";
@@ -1507,6 +1605,174 @@ body, .post-single {
 
 ```markdown
 这里是正文内容{{</* marginnote */>}}这里是侧边边注说明，支持 **加粗** 等 Markdown 语法。{{</* /marginnote */>}}，接下来继续正常书写。
+```
+
+### 代码块折叠：底部渐变遮罩 + 一键展开/收起代码块
+
+这个博客[展开按钮和限制代码块大小](https://blog.lordash.de/post/guide/ff377f87efdbc8bc/#代码块折叠)比较符合我的偏好，但还是不够好，这个博客[用短代码](https://yunpengtai.top/posts/hugo-journey/#代码折叠)导致代码全部隐藏，体验不好
+
+所以我编写了底部渐变遮罩 + 一键展开/收起代码块
+
+演示：
+
+![image-20260814133547711](../../../blog-img/image-20260814133547711.png)
+
+**extend_footer.html**
+
+```html
+
+<!-- 超长代码块渐变遮罩与一键展开/收起 -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const CODE_MAX_HEIGHT = 320; // 超过 320px 视为超长代码块
+
+    document.querySelectorAll('.post-content .highlight').forEach((container) => {
+      if (container.querySelector('.code-mask-layer')) return;
+
+      // 此时尚未添加 code-collapsible 限高类，scrollHeight 即为真实内容高度
+      if (container.scrollHeight > CODE_MAX_HEIGHT + 20) {
+        container.classList.add('code-collapsible');
+
+        const maskLayer = document.createElement('div');
+        maskLayer.className = 'code-mask-layer';
+
+        const expandBtn = document.createElement('button');
+        expandBtn.type = 'button';
+        expandBtn.className = 'code-expand-btn';
+        expandBtn.setAttribute('aria-label', '展开全部代码');
+        expandBtn.innerHTML = `
+          <span class="code-btn-text">展开全部代码</span>
+          <svg class="code-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        `;
+
+        const btnText = expandBtn.querySelector('.code-btn-text');
+        const btnIcon = expandBtn.querySelector('.code-btn-icon');
+
+        expandBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const willCollapse = container.classList.contains('is-expanded');
+
+          if (willCollapse) {
+            container.classList.remove('is-expanded');
+            btnText.textContent = '展开全部代码';
+            btnIcon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+            expandBtn.setAttribute('aria-label', '展开全部代码');
+
+            // 收起后：如果代码块顶部已滚出视口上方，瞬间回到代码块位置
+            const rect = container.getBoundingClientRect();
+            if (rect.top < 0) {
+              window.scrollTo({
+                top: window.scrollY + rect.top - 16,
+                behavior: 'instant'
+              });
+            }
+          } else {
+            container.classList.add('is-expanded');
+            btnText.textContent = '收起代码';
+            btnIcon.innerHTML = '<polyline points="18 15 12 9 6 15"></polyline>';
+            expandBtn.setAttribute('aria-label', '收起代码');
+          }
+        });
+
+        maskLayer.appendChild(expandBtn);
+        container.appendChild(maskLayer);
+      }
+    });
+  });
+</script>
+```
+
+**assets/css/extended/blank.css**
+
+```css
+
+/* ==========================================
+   长代码块限高 + 底部渐变遮罩 + 展开/收起按钮
+   ========================================== */
+
+/* 处于可折叠状态的代码块容器（限高在容器本身，兼容 table 行号布局） */
+.post-content .highlight.code-collapsible {
+    position: relative;
+    max-height: 320px;
+    overflow: hidden;
+    padding-bottom: 0;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 展开状态：移除高度限制 */
+.post-content .highlight.code-collapsible.is-expanded {
+    max-height: none;
+    overflow: visible;
+}
+
+/* 底部渐变遮罩层 (未展开状态) */
+.post-content .highlight.code-collapsible .code-mask-layer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90px;
+    background: linear-gradient(to bottom, transparent 0%, var(--code-bg, #2e2e33) 85%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 12px;
+    z-index: 10;
+    pointer-events: none;
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+}
+
+/* 展开状态下的遮罩层 (变为底部操作栏) */
+.post-content .highlight.code-collapsible.is-expanded .code-mask-layer {
+    position: relative;
+    height: auto;
+    background: transparent;
+    padding: 8px 0 12px 0;
+}
+
+/* 展开/收起胶囊按钮样式 */
+.code-expand-btn {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary);
+    background: var(--tertiary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.code-expand-btn:hover {
+    background: var(--primary);
+    color: var(--theme);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.code-expand-btn .code-btn-icon {
+    transition: transform 0.2s ease;
+}
+
+.code-expand-btn:hover .code-btn-icon {
+    transform: translateY(1px);
+}
+
+.is-expanded .code-expand-btn:hover .code-btn-icon {
+    transform: translateY(-1px);
+}
 ```
 
 ## 评论系统
