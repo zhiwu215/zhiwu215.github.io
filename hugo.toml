@@ -22,6 +22,13 @@ paginate = 10
 # 自动生成 robots.txt 文件（引导搜索引擎爬虫收录文章，有利于 SEO）
 enableRobotsTXT = true
 
+# 开启 Git 信息读取，用于自动获取最后修改时间
+enableGitInfo = true
+
+# 配置 Frontmatter 获取时间的优先级（支持本地文件实时修改预览）
+[frontmatter]
+  lastmod = [":git", ":fileModTime", "lastmod", "date"]
+
 # 主题导入 (Hugo Module)
 [module]
   [[module.imports]]
