@@ -1313,9 +1313,7 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 
 ### 图片点击放大
 
-参考：在[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)这个视频的1:09:00看到的效果，但是up没有详细说明，所以我从他的[github仓库](https://github.com/sonnycalcr/sonnycalcr.github.io)抄的{{< marginnote >}}使用叫做 **`medium-zoom`** 的 JavaScript 库，—点击后在原地放大背景变白，再点一下就缩小，我比较喜欢这个精简的功能
-
-我还看了[这个博客](https://yunpengtai.top/posts/hugo-journey/#图片点击放大)，通过引入Fancybox这个提供“放大、拖拽、左右滑动”等特效的 JavaScript 库 来实现图片放大和拖拽，不过是使用Hugo的**Shortcode（短代码）** 实现的，插入图片时不能用md原生的语法{{< /marginnote >}}
+参考：在[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)这个视频的1:09:00看到的效果，但是up没有详细说明，所以我从他的[github仓库](https://github.com/sonnycalcr/sonnycalcr.github.io)抄的{{< marginnote >}}使用叫做 `medium-zoom` 的 JavaScript 库，—点击后在原地放大背景变白，再点一下就缩小，我比较喜欢这个精简的功能<br>我还看了[这个博客](https://yunpengtai.top/posts/hugo-journey/#图片点击放大)，通过引入Fancybox这个提供“放大、拖拽、左右滑动”等特效的 JavaScript 库 来实现图片放大和拖拽，不过是使用Hugo的**Shortcode（短代码）** 实现的，插入图片时不能用md原生的语法{{< /marginnote >}}
 
 **blank.css**
 
@@ -1483,7 +1481,7 @@ enableGitInfo = true
 **layouts/shortcodes/marginnote.html**
 
 ```html
-<span class="sidenote-number"><small class="sidenote">{{ .Inner | markdownify | replaceRE "(?s)<p>(.*?)</p>" "<span class=\"sidenote-block\">$1</span>" | safeHTML }}</small></span>
+<span class="sidenote-number"><small class="sidenote">{{ .Inner | replaceRE "(?m)^\\s*>\\s?" "" | markdownify | replaceRE "(?s)<p>(.*?)</p>" "<span class=\"sidenote-block\">$1</span>" | safeHTML }}</small></span>
 ```
 
 **assets/css/extended/marginnote.css**
@@ -1558,6 +1556,10 @@ body, .post-single {
   box-sizing: border-box;
 }
 
+.sidenote code {
+  font-size: 0.85em !important;
+}
+
 .sidenote-block {
   display: block;
   margin-bottom: 0.5em;
@@ -1608,6 +1610,8 @@ body, .post-single {
 ```markdown
 这里是正文内容{{</* marginnote */>}}这里是侧边边注说明，支持 **加粗** 等 Markdown 语法。{{</* /marginnote */>}}，接下来继续正常书写。
 ```
+
+如果要在两段文字之间换行，中间加上 `<br>`
 
 ### 代码块折叠：底部渐变遮罩 + 一键展开/收起代码块
 
@@ -2148,6 +2152,52 @@ tags = []
 draft = true
 +++
 ```
+
+## 文章封面图
+
+> PaperMod仓库->Wiki->Feature
+>
+> ![image-20260814190206817](../../../blog-img/image-20260814190206817.png)
+
+在文章的 Front Matter（文件头部配置区）中添加 `[cover]` 表格，即可为文章配置封面图。
+
+> PaperMod仓库->Wiki->Variables![image-20260814190718614](../../../blog-img/image-20260814190718614.png)
+>
+> relative：是否使用相对路径。默认false，通常在采用 Hugo Page Bundles 结构{{<marginnote>}}普通文章结构content/posts/文章标题.md
+>
+> Page Bundles（文章包文件结构），就是每篇文章建一个文件夹文章放在：content/posts/文章标题当作文件夹名/index.md
+>
+> 图片放在同一目录下{{</marginnote>}}时设置为 `true`
+>
+> hidden：默认文章封面图即显示在文章列表，也会在点进文章后挂在文章标题下方。设置为false，文章章内部不显示
+>
+> ![image-20260814192022607](../../../blog-img/image-20260814192022607.png)
+
+**hugo.toml**
+
+responsiveImages设为false关闭响应式图片{{<marginnote>}}默认情况：如果你使用的是“文章包（Page Bundle）”的结构，Hugo默认会自动帮你处理图片。它会把你的一张封面图，自动裁剪生成好几种不同分辨率的小图和中图，并使用 HTML5 的 `srcset` 技术来让浏览器根据设备（如手机、电脑）自动加载最合适尺寸的图片
+
+会增加 Hugo 每次生成博客的等待时间{{</marginnote>}}
+
+```toml
+[params.cover]
+  responsiveImages = false
+  linkFullImages = true
+```
+
+**文章中**
+
+```markdown
+[cover]
+  image = "xxx"
+  alt = "xxx"
+  caption = "xxx"
+  hidden = true
+```
+
+我很少使用文章封面，所以没什么配置
+
+我看[这个博客](https://her-cat.com/posts/2025/10/08/hugo-paper-mod/#优化文章列表布局)还专门优化了布局，因为PaperMod 的文章列表默认是图片在上、文字在下。这个博客选了文字在左，封面在右的左右布局
 
 ## 待办
 
