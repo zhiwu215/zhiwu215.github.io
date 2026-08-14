@@ -430,7 +430,6 @@ hugo自带的分类的标签是`categories`和`tags`
 ```
 +++
 date = '2026-08-13T09:03:47+08:00'
-draft = true
 title = '如何配置博客1'
 series = ["配置博客"]
 +++
@@ -2146,7 +2145,6 @@ date = '{{ .Date }}'
 title = '{{ replace .File.ContentBaseName "-" " " | title }}'
 summary = ''
 tags = []
-draft = true
 +++
 ```
 
