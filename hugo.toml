@@ -163,3 +163,5 @@ pygmentsUseClasses = true
   [markup.highlight]
     # 默认给所有代码块左侧加上 1, 2, 3... 行号
     lineNos = true
+    # 使用 CSS 类名控制代码高亮（避免硬编码内联样式 style="background-color:..."）
+    noClasses = false

@@ -171,3 +171,13 @@ code {
 .win11 .medium-zoom-image--opened {
   cursor: url(/cursors/zoom-out.svg), default !important;
 }
+
+/* 消除 Hugo Chroma 代码块高亮误判的语法错误红底警告（兼顾内联 style 与 CSS Class） */
+.post-content span[style*="background-color:#1e0010"],
+.post-content span[style*="background-color: #1e0010"],
+.chroma .err {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+
