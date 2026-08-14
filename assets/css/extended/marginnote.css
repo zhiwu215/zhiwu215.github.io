@@ -67,6 +67,10 @@ body, .post-single {
   box-sizing: border-box;
 }
 
+.sidenote code {
+  font-size: 0.85em !important;
+}
+
 .sidenote-block {
   display: block;
   margin-bottom: 0.5em;
