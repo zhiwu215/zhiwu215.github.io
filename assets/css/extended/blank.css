@@ -180,4 +180,91 @@ code {
     color: inherit !important;
 }
 
+/* ==========================================
+   长代码块限高 + 底部渐变遮罩 + 展开/收起按钮
+   ========================================== */
+
+/* 处于可折叠状态的代码块容器（限高在容器本身，兼容 table 行号布局） */
+.post-content .highlight.code-collapsible {
+    position: relative;
+    max-height: 320px;
+    overflow: hidden;
+    padding-bottom: 0;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 展开状态：移除高度限制 */
+.post-content .highlight.code-collapsible.is-expanded {
+    max-height: none;
+    overflow: visible;
+}
+
+/* 底部渐变遮罩层 (未展开状态) */
+.post-content .highlight.code-collapsible .code-mask-layer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90px;
+    background: linear-gradient(to bottom, transparent 0%, var(--code-bg, #2e2e33) 85%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 12px;
+    z-index: 10;
+    pointer-events: none;
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+}
+
+/* 展开状态下的遮罩层 (变为底部操作栏) */
+.post-content .highlight.code-collapsible.is-expanded .code-mask-layer {
+    position: relative;
+    height: auto;
+    background: transparent;
+    padding: 8px 0 12px 0;
+}
+
+/* 展开/收起胶囊按钮样式 */
+.code-expand-btn {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary);
+    background: var(--tertiary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.code-expand-btn:hover {
+    background: var(--primary);
+    color: var(--theme);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.code-expand-btn .code-btn-icon {
+    transition: transform 0.2s ease;
+}
+
+.code-expand-btn:hover .code-btn-icon {
+    transform: translateY(1px);
+}
+
+.is-expanded .code-expand-btn:hover .code-btn-icon {
+    transform: translateY(-1px);
+}
+
+
 

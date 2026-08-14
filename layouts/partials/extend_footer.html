@@ -55,3 +55,66 @@
   });
 </script>
 {{- end -}}
+
+<!-- 超长代码块渐变遮罩与一键展开/收起 -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const CODE_MAX_HEIGHT = 320; // 超过 320px 视为超长代码块
+
+    document.querySelectorAll('.post-content .highlight').forEach((container) => {
+      if (container.querySelector('.code-mask-layer')) return;
+
+      // 此时尚未添加 code-collapsible 限高类，scrollHeight 即为真实内容高度
+      if (container.scrollHeight > CODE_MAX_HEIGHT + 20) {
+        container.classList.add('code-collapsible');
+
+        const maskLayer = document.createElement('div');
+        maskLayer.className = 'code-mask-layer';
+
+        const expandBtn = document.createElement('button');
+        expandBtn.type = 'button';
+        expandBtn.className = 'code-expand-btn';
+        expandBtn.setAttribute('aria-label', '展开全部代码');
+        expandBtn.innerHTML = `
+          <span class="code-btn-text">展开全部代码</span>
+          <svg class="code-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        `;
+
+        const btnText = expandBtn.querySelector('.code-btn-text');
+        const btnIcon = expandBtn.querySelector('.code-btn-icon');
+
+        expandBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const willCollapse = container.classList.contains('is-expanded');
+
+          if (willCollapse) {
+            container.classList.remove('is-expanded');
+            btnText.textContent = '展开全部代码';
+            btnIcon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+            expandBtn.setAttribute('aria-label', '展开全部代码');
+
+            // 收起后：如果代码块顶部已滚出视口上方，瞬间回到代码块位置
+            const rect = container.getBoundingClientRect();
+            if (rect.top < 0) {
+              window.scrollTo({
+                top: window.scrollY + rect.top - 16,
+                behavior: 'instant'
+              });
+            }
+          } else {
+            container.classList.add('is-expanded');
+            btnText.textContent = '收起代码';
+            btnIcon.innerHTML = '<polyline points="18 15 12 9 6 15"></polyline>';
+            expandBtn.setAttribute('aria-label', '收起代码');
+          }
+        });
+
+        maskLayer.appendChild(expandBtn);
+        container.appendChild(maskLayer);
+      }
+    });
+  });
+</script>
+
