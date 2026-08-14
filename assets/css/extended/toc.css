@@ -62,12 +62,14 @@
     /*目录显示高度*/
     max-height: 83vh;
     overflow-y: auto;
+
+    /* 隐藏滚动条 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
 }
 
-.toc .inner::-webkit-scrollbar-thumb {  /*滚动条*/
-    background: var(--border);
-    border: 7px solid var(--theme);
-    border-radius: var(--radius);
+.toc .inner::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .toc li ul {
