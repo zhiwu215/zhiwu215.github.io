@@ -33,3 +33,14 @@
     document.body.className += ' win11'
   }
 </script>
+
+<!-- 盘古之白：自动在中英文之间加入空格 -->
+{{- $pangu := resources.Get "js/pangu.umd.js" -}}
+{{- if $pangu -}}
+  <script defer src="{{ $pangu.RelPermalink }}"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      pangu.autoSpacingPage();
+    });
+  </script>
+{{- end -}}
