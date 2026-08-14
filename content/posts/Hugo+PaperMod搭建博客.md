@@ -1,6 +1,7 @@
 +++
 date = '2026-08-13T19:53:10+08:00'
 title = 'Hugo+PaperMod搭建博客'
+summary = '记录如何从零开始搭建个人博客，包含Hugo安装，PaperMod主题配置，giscus评论系统，图床等'
 tags = ['hugo', 'giscus', 'typora', '图床']
 series = ['博客搭建']
 +++
