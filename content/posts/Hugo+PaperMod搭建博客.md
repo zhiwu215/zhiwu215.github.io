@@ -396,7 +396,7 @@ placeholder: "支持搜索标题、文章、标签等" # 搜索输入框内的�
 ---
 ```
 
-### 自定义 Taxonomies
+### 文章分类（自定义 Taxonomies）
 
 hugo自带的分类的标签是`categories`和`tags`
 
@@ -538,7 +538,7 @@ code {
 
 参考：[Hugo PaperMod 主题精装修 | Tai's Blog](https://yunpengtai.top/posts/hugo-journey/#盘古之白)
 
-中文和英文以及数字之间有空格会更加便于阅读，使用盘古之白
+中文和英文以及数字之间有空格会更加便于阅读，使用盘古之白解决{{< marginnote >}}2026/8/14 尝试过 [CSS text-autospace与中文排版的圣杯时刻](https://zhuanlan.zhihu.com/p/1998845410316403847)，但目前效果不理想且编辑器有警告，故转而继续使用盘古之白。{{< /marginnote >}}。
 
 如果你没加空格，它会自动帮你加。如果你已经手动加了空格，就会直接跳过，什么都不做
 
@@ -557,15 +557,26 @@ code {
 ![image-20260814095850855](../../../blog-img/image-20260814095850855.png)
 
 ```html
-<!-- 盘古之白：自动在中英文之间加入空格 -->
+<!-- 盘古之白：异步加载并在完成后单次格式化页面，避免持续监听引发闪烁 -->
 {{- $pangu := resources.Get "js/pangu.umd.js" -}}
 {{- if $pangu -}}
-  <script defer src="{{ $pangu.RelPermalink }}"></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      pangu.autoSpacingPage();
-    });
-  </script>
+<script>
+  (function (u, c) {
+    var d = document,
+      t = "script",
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener("load", function (e) {
+        c(e);
+      });
+    }
+    s.parentNode.insertBefore(o, s);
+  })("{{ $pangu.RelPermalink }}", function () {
+    pangu.spacingPage();
+  });
+</script>
 {{- end -}}
 ```
 
@@ -1208,6 +1219,20 @@ code {
 
 ### 图片点击放大
 
+旁注
+
+通过引入 Fancybox 来实现图片放大和拖拽，Fancybox 就是那个提供“放大、拖拽、左右滑动”等特效的 JavaScript 库
+
+对方使用Hugo的**Shortcode（短代码）** 的语法，
+
+如果你照搬他的代码，你以后写文章时插入图片就不能用 Markdown 原生的 `![图片](链接)` 了，而是必须写成`{{< figure src="图片链接" >}}`
+
+
+
+使用叫做 **`medium-zoom`** 的 JavaScript 库，—点击后在原地放大背景变白，再点一下就缩小。**它本身就不具备拖拽、相册模式（左右切换）等复杂功能**
+
+
+
 在[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)这个视频的1:09:00看到的效果，但是up没有详细说明
 
 所以我从他的[github仓库](https://github.com/sonnycalcr/sonnycalcr.github.io)抄的
@@ -1300,6 +1325,188 @@ code {
 >
   {{- with .Text | safeHTML }}{{ . }}{{ end -}}
 </a>
+```
+
+### 添加修改时间
+
+参考：[Hugo PaperMod 主题精装修 | Tai's Blog](https://yunpengtai.top/posts/hugo-journey/#添加修改时间)
+
+但对方的代码存在一些问题，更新时间是需要自己手动设置的，不合理
+
+> 官方文档
+>
+> Docs->Configuration->All settings
+>
+> ![image-20260814104338423](../../../blog-img/image-20260814104338423.png)
+>
+> 默认配置：Hugo 会从左向右依次检查，一旦在某一项找到了有效的时间，就立刻停下来，把这个时间作为文章的“最后修改时间
+>
+> ![image-20260814104651110](../../../blog-img/image-20260814104651110.png)
+
+**hugo.toml**
+
+> 手动设置了`:fileModTime`，方便在本地运行的时候查看
+
+```toml
+# 开启 Git 信息读取 (用于自动获取文章最后更新时间)
+enableGitInfo = true
+
+# 配置 Frontmatter 获取时间的优先级（支持本地文件实时修改预览）
+[frontmatter]
+  lastmod = [":git", ":fileModTime", "lastmod", "date"]
+```
+
+**layouts/partials/post_meta.html**
+
+```html
+{{- $scratch := newScratch }}
+
+{{- if not .Date.IsZero -}}
+{{- $scratch.Add "meta" (slice (printf "<span title='%s'>%s</span>" (.Date) (.Date.Format (default "January 2, 2006" .Site.Params.DateFormat)))) }}
+{{- end -}}
+
+{{- if (.Param "ShowReadingTime") -}}
+{{- $scratch.Add "meta" (slice (i18n "read_time" .ReadingTime | default (printf "%d min" .ReadingTime))) }}
+{{- end -}}
+
+{{- if (.Param "ShowWordCount") -}}
+{{- $scratch.Add "meta" (slice (i18n "words" .WordCount | default (printf "%d words" .WordCount))) }}
+{{- end -}}
+
+{{- /* 自动判断：如果最后修改时间(Lastmod) 不等于 发布时间(Date)，就显示“最后更新于” */ -}}
+{{- if and (not .Lastmod.IsZero) (not .Date.IsZero) -}}
+  {{- if ne (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02") -}}
+    {{- $scratch.Add "meta" (slice (printf "更新于&nbsp;%s" (.Lastmod.Format (default "2006年01月02日" .Site.Params.DateFormat)))) }}
+  {{- end -}}
+{{- end -}}
+
+{{- with ($scratch.Get "meta") -}}
+{{- delimit . "&nbsp;·&nbsp;" | safeHTML -}}
+{{- end -}}
+```
+
+### MarginNote旁注
+
+参考：[Hugo PaperMod 主题精装修 | Tai's Blog](https://yunpengtai.top/posts/hugo-journey/#marginnote)
+
+**layouts/shortcodes/marginnote.html**
+
+```html
+<span class="sidenote-number"><small class="sidenote">{{ .Inner | markdownify }}</small></span>
+```
+
+**assets/css/extended/marginnote.css**
+
+```css
+/* ==========================================
+   Sidenote / Marginnote 边注样式
+   ========================================== */
+
+:root {
+  --sidenote-bg: rgba(64, 157, 255, 0.08);
+  --sidenote-color: var(--secondary);
+  --sidenote-accent: #409dff;
+  --sidenote-prefix: #e06c75;
+}
+
+.dark {
+  --sidenote-bg: rgba(64, 157, 255, 0.15);
+  --sidenote-color: #abb2bf;
+  --sidenote-accent: #61afef;
+  --sidenote-prefix: #e06c75;
+}
+
+/* 计数器初始化：在文章主体或 body 重置计数器 */
+body, .post-single {
+  counter-reset: sidenote-counter;
+}
+
+/* 正文中的上标编号 */
+.sidenote-number {
+  counter-increment: sidenote-counter;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sidenote-number::after {
+  content: "#" counter(sidenote-counter);
+  vertical-align: super;
+  font-size: 0.8em;
+  font-weight: 700;
+  color: var(--sidenote-accent);
+  padding: 0 2px;
+  transition: all 0.2s ease;
+}
+
+.sidenote-number:hover::after {
+  color: var(--sidenote-prefix);
+  text-decoration: underline;
+}
+
+/* 侧边注本体（在大屏幕上浮动在右侧留白区域） */
+.sidenote {
+  float: right;
+  clear: right;
+  position: relative;
+  margin-right: -18vw;
+  width: 16vw;
+  max-width: 220px;
+  min-width: 140px;
+  padding: 6px 10px;
+  margin-top: 0.2em;
+  margin-bottom: 0.8em;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--sidenote-color);
+  background-color: transparent;
+  border-left: 2px solid rgba(64, 157, 255, 0.3);
+  border-radius: 4px;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+/* 侧边注前缀标记（自动带上序号） */
+.sidenote::before {
+  content: "#" counter(sidenote-counter) " ";
+  position: relative;
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--sidenote-prefix);
+  margin-right: 4px;
+}
+
+/* 鼠标悬停正文编号或悬停边注时高亮 */
+.sidenote-number:hover .sidenote,
+.sidenote:hover {
+  background-color: var(--sidenote-bg);
+  border-left-color: var(--sidenote-accent);
+}
+
+/* ==========================================
+   移动端与窄屏自适应响应式处理
+   当屏幕宽度不足以在右侧展示边注时优雅内嵌
+   ========================================== */
+@media (max-width: 1280px) {
+  .sidenote {
+    float: none;
+    display: block;
+    margin-right: 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 8px 0;
+    padding: 8px 12px;
+    background-color: var(--sidenote-bg);
+    border-left: 3px solid var(--sidenote-accent);
+  }
+}
+```
+
+**使用说明**
+
+```markdown
+这里是正文内容{{</* marginnote */>}}这里是侧边边注说明，支持 **加粗** 等 Markdown 语法。{{</* /marginnote */>}}，接下来继续正常书写。
 ```
 
 ## 评论系统
