@@ -79,12 +79,12 @@
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-/* 激活高亮项：不改变 font-size，彻底杜绝跳动抖动 */
+/* 激活高亮项：用 text-shadow 模拟加粗，避免 font-weight 引起布局宽度变化和跳动 */
 .toc .active {
   color: var(--primary) !important;
-  font-weight: 600;
   border-left-color: var(--primary) !important;
   background-color: rgba(128, 128, 128, 0.06);
+  text-shadow: 0.3px 0 0 currentColor;
 }
 
 .toc .inner {
