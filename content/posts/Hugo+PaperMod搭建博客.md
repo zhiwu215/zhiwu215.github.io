@@ -1908,54 +1908,34 @@ Giscus是由 `GitHub Discussions` 驱动的评论系统，因为它完全免费�
 </script>
 ```
 
-## 不蒜子阅读量统计
+## 访问量统计
 
 演示：
+
+![image-20260815114150358](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260815114150358.png)
+
+看了很多别人的博客，很多人都用[不蒜子](https://www.busuanzi.cc/)
+
+我是从[魔改PaperMod主题和博客改动 | 梓言堂 - Yuk's Blog](https://blog.yuk7.com/posts/papermod/#四添加-umami-网站统计)了解到的Umami，但这是一个网站分析工具，它可以分析出一个网站的详细访问数据，包括请求PV、UV、国家来源、来源于哪个网站、用户的操作系统、浏览器等等，不过对我没什么用
+
+然后我看到[Vercount: 一个比不蒜子更好的网站计数器 | EvanNotFound's Blog](https://ohevan.com/vercount-website-counter-busuanzi-alternative.html)，Vercount比不蒜子更好，比如更稳定什么的
 
 **layouts/partials/extend_head.html**
 
 ```html
-<!-- busuanzi -->
-{{- if .Site.Params.busuanzi.enable -}}
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <meta name="referrer" content="no-referrer-when-downgrade">
-{{- end -}}
+<!-- Vercount 访问量统计 -->
+<script defer src="https://vercount.one/js"></script>
 ```
 
 **layouts/partials/extend_footer.html**
 
 ```html
-<!-- 不蒜子Busuanzi流量统计，站点底部显示总访问量与访客数 -->
-{{ if .Site.Params.busuanzi.enable -}}
-<div class="busuanzi-footer" style="text-align: center; padding: 4px 0; color: var(--secondary); font-size: 14px; margin-top: 4px;">
-  <span id="busuanzi_container_site_pv">
-    本站总访问量 <span id="busuanzi_value_site_pv">0</span> 次
-  </span>
+<!-- Vercount 站点底部总访问量与访客数统计 -->
+<div class="site-footer-stats" style="text-align: center; padding: 4px 0; color: var(--secondary); font-size: 14px; margin-top: 2px;">
+  <span>本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>
   <span style="margin: 0 4px;">·</span>
-  <span id="busuanzi_container_site_uv">
-    本站访客数 <span id="busuanzi_value_site_uv">0</span> 人次
-  </span>
+  <span>本站总访客数 <span id="busuanzi_value_site_uv"></span> 人</span>
 </div>
-{{- end -}}
-```
-
-**layouts/partials/post_meta.html**
-
-> 因为要利用利用 Hugo 的自动排版机制拼接圆点 `·`，所以需要选择放置代码的位置，不然排版有问题，可以把代码给ai来询问放在哪里，或者直接[从我的仓库看](https://github.com/zhiwu215/zhiwu215.github.io/blob/main/layouts/partials/post_meta.html)
-
-```html
-{{- /* 不蒜子：仅在单篇文章详情页 (page.IsPage) 且开启 busuanzi 时显示单篇阅读量 */ -}}
-{{- if and page.IsPage .Site.Params.busuanzi.enable -}}
-  {{- $scratch.Add "meta" (slice (printf "<span id='busuanzi_container_page_pv'>本文阅读量<span id='busuanzi_value_page_pv'>0</span>次</span>")) }}
-{{- end -}}
-```
-
-**hugo.toml**
-
-```toml
-  # 不蒜子 (Busuanzi) 访问量统计
-  [params.busuanzi]
-    enable = true
 ```
 
 ## Github自动部署
@@ -2254,35 +2234,3 @@ responsiveImages设为false关闭响应式图片{{<marginnote>}}默认情况：�
 我很少使用文章封面，所以没什么配置
 
 我看[这个博客](https://her-cat.com/posts/2025/10/08/hugo-paper-mod/#优化文章列表布局)还专门优化了布局，因为PaperMod 的文章列表默认是图片在上、文字在下。这个博客选了文字在左，封面在右的左右布局
-
-## 待办
-
-这里放着我觉得有用，但没有配置的设置
-
-### 数学公式
-
-[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)
-
-这个视频里面给papermod主题添加数学公式，使用的是 mathjax
-
-[Hugo以及PaperMod主题的配置 | 似水](https://blog.lordash.de/post/guide/ff377f87efdbc8bc/#数学公式-katex)
-
-这个博客里有说明，在papermod文档里有提到整合数学公式
-
-### Twikoo 评论系统
-
-[Hugo以及PaperMod主题的配置 | 似水](https://blog.lordash.de/post/guide/ff377f87efdbc8bc/#评论系统-twikoo)
-
-### 短代码
-
-[Hugo以及PaperMod主题的配置 | 似水](https://blog.lordash.de/post/guide/ff377f87efdbc8bc/#shortcode)
-
-### 文章模板
-
-[Hugo + PaperMod + Github Pages 搭建一个完善的个人博客 | LFL's Blog](https://lflmlxy.github.io/posts/create-blog/#7-文章模板)
-
-### Netlify 托管与服务器推送
-
-[【大学生提高课】3 hexo与hugo博客搭建与github自动化推送和服务器推送_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1fNNreEEDi/?spm_id_from=333.337.search-card.all.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)
-
-这个视频演示使用netlify托管github page和服务器推送
