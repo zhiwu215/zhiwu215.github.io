@@ -610,26 +610,30 @@ body {
 
 ![image-20260814095850855](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814095850855.png)
 
+在**layouts/partials/extend_head.html**中添加以下代码：
+
 ```html
-<!-- 盘古之白：异步加载并在完成后单次格式化页面，避免持续监听引发闪烁 -->
+<!-- 盘古之白：同步加载 + 隐藏页面直到格式化完成，彻底消除布局抖动 -->
 {{- $pangu := resources.Get "js/pangu.umd.js" -}}
 {{- if $pangu -}}
+<style>body { opacity: 0; }</style>
+<script src="{{ $pangu.RelPermalink }}"></script>
 <script>
-  (function (u, c) {
-    var d = document,
-      t = "script",
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) {
-      o.addEventListener("load", function (e) {
-        c(e);
-      });
+  (function () {
+    var revealed = false;
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      document.body.style.transition = "opacity 0.15s ease";
+      document.body.style.opacity = "1";
     }
-    s.parentNode.insertBefore(o, s);
-  })("{{ $pangu.RelPermalink }}", function () {
-    pangu.spacingPage();
-  });
+    document.addEventListener("DOMContentLoaded", function () {
+      pangu.spacingPage();
+      reveal();
+    });
+    // 兜底：即使 pangu 出错也确保页面可见
+    setTimeout(function () { if (document.body) reveal(); }, 300);
+  })();
 </script>
 {{- end -}}
 ```
