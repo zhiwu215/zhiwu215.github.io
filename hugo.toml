@@ -57,6 +57,11 @@ enableGitInfo = true
   ShowCodeCopyButtons = true
   comments = true # 全局开启评论功能
 
+  # 不蒜子 (Busuanzi) 访问量统计
+  [params.busuanzi]
+    enable = true
+
+
   # 文章目录 (TOC) 设置
   ShowToc = true
   TocOpen = true
