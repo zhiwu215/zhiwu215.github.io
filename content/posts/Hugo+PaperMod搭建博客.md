@@ -3,7 +3,7 @@ date = '2026-08-13T19:53:10+08:00'
 title = 'Hugo+PaperMod搭建博客'
 summary = '记录如何从零开始搭建个人博客，包含Hugo安装，PaperMod主题配置，giscus评论系统，图床等'
 tags = ['hugo', 'giscus', 'typora', '图床']
-series = ['博客搭建']
+series = ['博客搭建'] 
 +++
 
 > 提示：
@@ -407,9 +407,9 @@ placeholder: "支持搜索标题、文章、标签等" # 搜索输入框内的�
 
 ### 文章分类（自定义 Taxonomies）
 
-hugo自带的分类的标签是`categories`和`tags`
-
-![image-20260813122816786](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813122816786.png)
+> hugo自带的分类的标签是`categories`和`tags`
+>
+> ![image-20260813122816786](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813122816786.png)
 
 我个人不习惯用categories分类，这个词就好像是要对所有的文章进行区分一样
 
@@ -486,6 +486,14 @@ layout: "about"
 
 **中文使用霞鹜文楷**
 
+官方仓库：[lxgw/LxgwWenKai](https://github.com/lxgw/LxgwWenKai)
+
+因为官方仓库没有woff2字体。所以使用cdn引入，从ZSFT搜索{{<marginnote>}}ZeoSeven Fonts（ZSFT）是开源免费商用字体聚合站点{{</marginnote>}}
+
+[霞鹜文楷 | 霞鶩文楷 | LXGW WenKai | ZeoSeven Fonts (ZSFT)](https://fonts.zeoseven.com/items/292/#embed)
+
+
+
 ![image-20260813151909776](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813151909776.png)
 
 **layouts/partials/extend_head.html**
@@ -558,11 +566,11 @@ code {
 >
 >再下面就是展示各种高级功能
 >
->![image-20260814094856882](../../../blog-img/image-20260814094856882.png)
+>![image-20260814094856882](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814094856882.png)
 
 我的做法是下载到本地使用，根据CDN文件的链接（就是演示里`src`后面的内容），直接把文件下载到**assets/js/**
 
-![image-20260814095850855](../../../blog-img/image-20260814095850855.png)
+![image-20260814095850855](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814095850855.png)
 
 ```html
 <!-- 盘古之白：异步加载并在完成后单次格式化页面，避免持续监听引发闪烁 -->
@@ -607,7 +615,7 @@ code {
 
 演示：
 
-![image-20260814133809900](../../../blog-img/image-20260814133809900.png)
+![image-20260814133809900](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814133809900.png)
 
 **layouts/partials/home_info.html**
 
@@ -765,7 +773,7 @@ Hugo 自带的配色方案是 Chroma，PaperMod 用的 highlight.js，我继续�
 
 Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if ... }}`）或正则匹配式时，纯 HTML 解析器会将其误判为语法错误，如图：
 
-![image-20260814124603665](../../../blog-img/image-20260814124603665.png)
+![image-20260814124603665](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814124603665.png)
 
 **assets/css/extended/blank.css**
 
@@ -791,7 +799,7 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 
 演示：
 
-![image-20260814133754063](../../../blog-img/image-20260814133754063.png)
+![image-20260814133754063](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814133754063.png)
 
 **layouts/_default/list.html**
 
@@ -965,7 +973,7 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 
 展示：
 
-![image-20260814143138951](../../../blog-img/image-20260814143138951.png)
+![image-20260814143138951](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814143138951.png)
 
 **layouts/_default/_markup/render-codeblock.html**
 
@@ -1021,7 +1029,7 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 
 演示：
 
-![image-20260814133736606](../../../blog-img/image-20260814133736606.png)
+![image-20260814133736606](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814133736606.png)
 
 **layouts/partials/toc.html**
 
@@ -1313,7 +1321,9 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 
 ### 图片点击放大
 
-参考：在[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)这个视频的1:09:00看到的效果，但是up没有详细说明，所以我从他的[github仓库](https://github.com/sonnycalcr/sonnycalcr.github.io)抄的{{< marginnote >}}使用叫做 `medium-zoom` 的 JavaScript 库，—点击后在原地放大背景变白，再点一下就缩小，我比较喜欢这个精简的功能<br>我还看了[这个博客](https://yunpengtai.top/posts/hugo-journey/#图片点击放大)，通过引入Fancybox这个提供“放大、拖拽、左右滑动”等特效的 JavaScript 库 来实现图片放大和拖拽，不过是使用Hugo的**Shortcode（短代码）** 实现的，插入图片时不能用md原生的语法{{< /marginnote >}}
+参考：在[Hugo+PaperMod搭建博客_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pRYPetEWy/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=7382d11a54f8a0e8a3163cc36fe6f157)这个视频的1:09:00看到的效果，但是up没有详细说明，所以我从[他的github仓库](https://github.com/sonnycalcr/sonnycalcr.github.io)抄的{{< marginnote >}}使用叫做 `medium-zoom` 的 JavaScript 库，—点击后在原地放大背景变白，再点一下就缩小，我比较喜欢这个精简的功能
+
+我还看了[这个博客](https://yunpengtai.top/posts/hugo-journey/#图片点击放大)，通过引入Fancybox这个提供“放大、拖拽、左右滑动”等特效的 JavaScript 库 来实现图片放大和拖拽，不过是使用Hugo的**Shortcode（短代码）** 实现的，插入图片时不能用md原生的语法{{< /marginnote >}}
 
 **blank.css**
 
@@ -1416,17 +1426,17 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 
 演示：
 
-![image-20260814133658626](../../../blog-img/image-20260814133658626.png)
+![image-20260814133658626](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814133658626.png)
 
 > 参数说明：
 >
 > Docs->Configuration->All settings
 >
-> ![image-20260814104338423](../../../blog-img/image-20260814104338423.png)
+> ![image-20260814104338423](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814104338423.png)
 >
 > 默认配置：Hugo 会从左向右依次检查，一旦在某一项找到了有效的时间，就立刻停下来，把这个时间作为文章的“最后修改时间
 >
-> ![image-20260814104651110](../../../blog-img/image-20260814104651110.png)
+> ![image-20260814104651110](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814104651110.png)
 
 **hugo.toml**
 
@@ -1476,7 +1486,7 @@ enableGitInfo = true
 
 演示：
 
-![image-20260814133624664](../../../blog-img/image-20260814133624664.png)
+![image-20260814133624664](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814133624664.png)
 
 **layouts/shortcodes/marginnote.html**
 
@@ -1611,8 +1621,6 @@ body, .post-single {
 这里是正文内容{{</* marginnote */>}}这里是侧边边注说明，支持 **加粗** 等 Markdown 语法。{{</* /marginnote */>}}，接下来继续正常书写。
 ```
 
-如果要在两段文字之间换行，中间加上 `<br>`
-
 ### 代码块折叠：底部渐变遮罩 + 一键展开/收起代码块
 
 这个博客[展开按钮和限制代码块大小](https://blog.lordash.de/post/guide/ff377f87efdbc8bc/#代码块折叠)比较符合我的偏好，但还是不够好，这个博客[用短代码](https://yunpengtai.top/posts/hugo-journey/#代码折叠)导致代码全部隐藏，体验不好
@@ -1621,7 +1629,7 @@ body, .post-single {
 
 演示：
 
-![image-20260814133547711](../../../blog-img/image-20260814133547711.png)
+![image-20260814133547711](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814133547711.png)
 
 **extend_footer.html**
 
@@ -1781,15 +1789,13 @@ body, .post-single {
 }
 ```
 
-## 评论系统
-
-### Giscus 评论系统
+## Giscus 评论系统
 
 参考：[Hugo + PaperMod + Github Pages 搭建一个完善的个人博客(以 Windows11 为例) | SonnyCalcr's Blog](https://sonnycalcr.github.io/posts/build-a-blog-using-hugo-papermod-github-pages/#配置评论)
 
 [Hugo 博客引入 Giscus 评论系统 - 探索云原生](https://www.lixueduan.com/posts/blog/02-add-giscus-comment/#1-选择一个评论系统)
 
-Giscus是由 `GitHub Discussions` 驱动的评论系统
+Giscus是由 `GitHub Discussions` 驱动的评论系统，因为它完全免费，而且部署方便，所以用这个
 
 **仓库开启Discussions**
 
@@ -1902,6 +1908,56 @@ Giscus是由 `GitHub Discussions` 驱动的评论系统
 </script>
 ```
 
+## 不蒜子阅读量统计
+
+演示：
+
+**layouts/partials/extend_head.html**
+
+```html
+<!-- busuanzi -->
+{{- if .Site.Params.busuanzi.enable -}}
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <meta name="referrer" content="no-referrer-when-downgrade">
+{{- end -}}
+```
+
+**layouts/partials/extend_footer.html**
+
+```html
+<!-- 不蒜子Busuanzi流量统计，站点底部显示总访问量与访客数 -->
+{{ if .Site.Params.busuanzi.enable -}}
+<div class="busuanzi-footer" style="text-align: center; padding: 4px 0; color: var(--secondary); font-size: 14px; margin-top: 4px;">
+  <span id="busuanzi_container_site_pv">
+    本站总访问量 <span id="busuanzi_value_site_pv">0</span> 次
+  </span>
+  <span style="margin: 0 4px;">·</span>
+  <span id="busuanzi_container_site_uv">
+    本站访客数 <span id="busuanzi_value_site_uv">0</span> 人次
+  </span>
+</div>
+{{- end -}}
+```
+
+**layouts/partials/post_meta.html**
+
+> 因为要利用利用 Hugo 的自动排版机制拼接圆点 `·`，所以需要选择放置代码的位置，不然排版有问题，可以把代码给ai来询问放在哪里，或者直接[从我的仓库看](https://github.com/zhiwu215/zhiwu215.github.io/blob/main/layouts/partials/post_meta.html)
+
+```html
+{{- /* 不蒜子：仅在单篇文章详情页 (page.IsPage) 且开启 busuanzi 时显示单篇阅读量 */ -}}
+{{- if and page.IsPage .Site.Params.busuanzi.enable -}}
+  {{- $scratch.Add "meta" (slice (printf "<span id='busuanzi_container_page_pv'>本文阅读量<span id='busuanzi_value_page_pv'>0</span>次</span>")) }}
+{{- end -}}
+```
+
+**hugo.toml**
+
+```toml
+  # 不蒜子 (Busuanzi) 访问量统计
+  [params.busuanzi]
+    enable = true
+```
+
 ## Github自动部署
 
 > 部署在github page的教程：
@@ -1962,7 +2018,7 @@ PicGo是图片上传工具，Github充当图床
 
 **先选择保存在本地特定目录，再配置PicGo**
 
-![image-20260814074351394](../../../blog-img/image-20260814074351394.png)
+![image-20260814074351394](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814074351394.png)
 
 > 注意：
 >
@@ -1972,7 +2028,7 @@ PicGo是图片上传工具，Github充当图床
 >
 > Hugo 在执行构建时，会把 `static/` 目录下的所有文件和子目录**原样复制**到 `public/` 目录下。图片不在`public/` 目录，浏览器在加载页面时找不到图片
 >
-> ![image-20260814073314343](../../../blog-img/image-20260814073314343.png)
+> ![image-20260814073314343](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814073314343.png)
 
 **写完博客再一键上传图片**
 
@@ -2157,11 +2213,11 @@ draft = true
 
 > PaperMod仓库->Wiki->Feature
 >
-> ![image-20260814190206817](../../../blog-img/image-20260814190206817.png)
+> ![image-20260814190206817](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814190206817.png)
 
 在文章的 Front Matter（文件头部配置区）中添加 `[cover]` 表格，即可为文章配置封面图。
 
-> PaperMod仓库->Wiki->Variables![image-20260814190718614](../../../blog-img/image-20260814190718614.png)
+> PaperMod仓库->Wiki->Variables![image-20260814190718614](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814190718614.png)
 >
 > relative：是否使用相对路径。默认false，通常在采用 Hugo Page Bundles 结构{{<marginnote>}}普通文章结构content/posts/文章标题.md
 >
@@ -2171,7 +2227,7 @@ draft = true
 >
 > hidden：默认文章封面图即显示在文章列表，也会在点进文章后挂在文章标题下方。设置为false，文章章内部不显示
 >
-> ![image-20260814192022607](../../../blog-img/image-20260814192022607.png)
+> ![image-20260814192022607](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260814192022607.png)
 
 **hugo.toml**
 
