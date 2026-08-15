@@ -101,6 +101,8 @@ hugo new project <项目名>
 
 **初始化hugo mod**
 
+> 如果使用Github Page部署博客，仓库一定是<你的用户名.github.io>
+
 ```bash
 # github仓库：github.com/你的github用户名/你的仓库名
 hugo mod init <你的github仓库>
