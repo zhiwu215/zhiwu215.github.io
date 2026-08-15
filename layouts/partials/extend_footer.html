@@ -119,8 +119,35 @@
 </script>
 
 <!-- Vercount 站点底部总访问量与访客数统计 -->
-<div class="site-footer-stats" style="text-align: center; padding: 4px 0; color: var(--secondary); font-size: 14px; margin-top: 2px;">
+<div class="site-footer-stats" id="site-footer-stats" style="text-align: center; padding: 4px 0; color: var(--secondary); font-size: 14px; margin-top: 2px; opacity: 0; transition: opacity 0.4s ease;">
   <span>本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>
   <span style="margin: 0 4px;">·</span>
   <span>本站总访客数 <span id="busuanzi_value_site_uv"></span> 人</span>
 </div>
+<script>
+  // 等待 Vercount 填入数据后淡入显示，避免闪烁
+  (function () {
+    var stats = document.getElementById('site-footer-stats');
+    var pv = document.getElementById('busuanzi_value_site_pv');
+    var uv = document.getElementById('busuanzi_value_site_uv');
+    if (!stats || !pv || !uv) return;
+
+    function show() { stats.style.opacity = '1'; }
+
+    // 如果数据已经存在（缓存命中等），直接显示
+    if (pv.textContent.trim() && uv.textContent.trim()) { show(); return; }
+
+    // 监听 Vercount 脚本写入数据
+    var observer = new MutationObserver(function () {
+      if (pv.textContent.trim() && uv.textContent.trim()) {
+        show();
+        observer.disconnect();
+      }
+    });
+    observer.observe(pv, { childList: true, characterData: true, subtree: true });
+    observer.observe(uv, { childList: true, characterData: true, subtree: true });
+
+    // 兜底：5 秒后无论如何都显示（防止脚本加载失败导致永久隐藏）
+    setTimeout(function () { show(); observer.disconnect(); }, 5000);
+  })();
+</script>
