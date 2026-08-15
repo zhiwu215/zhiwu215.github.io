@@ -3,3 +3,27 @@
 
 <!-- Vercount 访问量统计 -->
 <script defer src="https://vercount.one/js"></script>
+
+<!-- 盘古之白：同步加载 + 隐藏页面直到格式化完成，彻底消除布局抖动 -->
+{{- $pangu := resources.Get "js/pangu.umd.js" -}}
+{{- if $pangu -}}
+<style>body { opacity: 0; }</style>
+<script src="{{ $pangu.RelPermalink }}"></script>
+<script>
+  (function () {
+    var revealed = false;
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      document.body.style.transition = "opacity 0.15s ease";
+      document.body.style.opacity = "1";
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      pangu.spacingPage();
+      reveal();
+    });
+    // 兜底：即使 pangu 出错也确保页面可见
+    setTimeout(function () { if (document.body) reveal(); }, 300);
+  })();
+</script>
+{{- end -}}
