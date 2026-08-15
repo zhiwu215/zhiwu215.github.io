@@ -207,6 +207,13 @@ paginate = 10
 # 自动生成 robots.txt 文件（引导搜索引擎爬虫收录文章，有利于 SEO）
 enableRobotsTXT = true
 
+# 开启 Git 信息读取，用于自动获取最后修改时间
+enableGitInfo = true
+
+# 配置 Frontmatter 获取时间的优先级（支持本地文件实时修改预览）
+[frontmatter]
+  lastmod = [":git", ":fileModTime", "lastmod", "date"]
+
 # 主题导入 (Hugo Module)
 [module]
   [[module.imports]]
@@ -233,10 +240,33 @@ enableRobotsTXT = true
   ShowPostNavLinks = true
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
+  comments = true # 全局开启评论功能
+
 
   # 文章目录 (TOC) 设置
   ShowToc = true
   TocOpen = true
+
+  # 封面图片设置 (Cover)
+  [params.cover]
+    responsiveImages = false
+    linkFullImages = true
+
+  # Giscus 评论系统配置
+  [params.giscus]
+    repo = "zhiwu215/zhiwu215.github.io" # 你的 GitHub 博客仓库（或专门放 Discussion 的仓库）
+    repoId = "xxx"               # 从 giscus.app 生成获取的 repoId
+    category = "Announcements"            # Discussion 的分类
+    categoryId = "xxx"         # 从 giscus.app 生成获取的 categoryId
+    mapping = "pathname"                  # 匹配方式：pathname
+    strict = "0"
+    reactionsEnabled = "1"
+    emitMetadata = "0"
+    inputPosition = "top"
+    lightTheme = "light"                 # 浅色模式对应的 Giscus 主题
+    darkTheme = "dark"                   # 深色模式对应的 Giscus 主题
+    lang = "zh-CN"
+    loading = "lazy"
 
   # 站点图标 (Favicon)
   [params.assets]
@@ -324,6 +354,8 @@ pygmentsUseClasses = true
   [markup.highlight]
     # 默认给所有代码块左侧加上 1, 2, 3... 行号
     lineNos = true
+    # 使用 CSS 类名控制代码高亮（避免硬编码内联样式 style="background-color:..."）
+    noClasses = false
 ```
 
 ### 首页欢迎模式
@@ -333,31 +365,35 @@ pygmentsUseClasses = true
 > PaperMod文档说有三种模式，我使用Home-Info
 >
 > ![image-20260813115229863](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813115229863.png)
+>
+> 支持图标：
+>
+> ![image-20260815134456596](../../../blog-img/image-20260815134456596.png)
 
-```
+```toml
 [params]
 
   # 首页欢迎信息模式 (Home Info)
   [params.homeInfoParams]
-    Title = "知兀"
-    Content = "print(\"Hello, World\")"
+    Title = "你的标题"
+    Content = "你的欢迎语"
 
   # 社交媒体链接
   [[params.socialIcons]]
     name = "bilibili"
-    url = "https://space.bilibili.com/3546704263514722"
+    url = "xxxx"
 
   [[params.socialIcons]]
     name = "github"
-    url = "https://github.com/zhiwu215"
+    url = "xxx"
 
   [[params.socialIcons]]
     name = "x"
-    url = "https://x.com/zhiwu215"
+    url = "xxx"
 
   [[params.socialIcons]]
     name = "email"
-    url = "mailto:zhiwu215@gmail.com"
+    url = "mailto:xxx"
 ```
 
 ### 导航栏配置
@@ -543,8 +579,10 @@ body {
    代码块样式微调
    ========================================== */
 .post-content pre,
-code {
-    font-family: "JetBrains Mono", monospace;
+.post-content code,
+.chroma,
+.chroma * {
+    font-family: 'JetBrains Mono', 'LXGW WenKai', monospace !important;
     font-size: 1rem;
     line-height: 1.2;
 }
