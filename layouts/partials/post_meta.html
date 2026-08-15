@@ -19,13 +19,6 @@
   {{- end -}}
 {{- end -}}
 
-{{- /* 不蒜子：仅在单篇文章详情页 (page.IsPage) 且开启 busuanzi 时显示单篇阅读量 */ -}}
-{{- if and page.IsPage .Site.Params.busuanzi.enable -}}
-  {{- $scratch.Add "meta" (slice (printf "<span id='busuanzi_container_page_pv'>本文阅读量<span id='busuanzi_value_page_pv'>0</span>次</span>")) }}
-{{- end -}}
-
-
-
 {{- with ($scratch.Get "meta") -}}
 {{- delimit . "&nbsp;·&nbsp;" | safeHTML -}}
 {{- end -}}

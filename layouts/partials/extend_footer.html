@@ -117,16 +117,3 @@
     });
   });
 </script>
-
-<!-- 不蒜子Busuanzi流量统计，站点底部显示总访问量与访客数 -->
-{{ if .Site.Params.busuanzi.enable -}}
-<div class="busuanzi-footer" style="text-align: center; padding: 4px 0; color: var(--secondary); font-size: 14px; margin-top: 4px;">
-  <span id="busuanzi_container_site_pv">
-    本站总访问量 <span id="busuanzi_value_site_pv">0</span> 次
-  </span>
-  <span style="margin: 0 4px;">·</span>
-  <span id="busuanzi_container_site_uv">
-    本站访客数 <span id="busuanzi_value_site_uv">0</span> 人次
-  </span>
-</div>
-{{- end -}}
