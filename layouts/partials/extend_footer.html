@@ -117,3 +117,57 @@
     });
   });
 </script>
+<!-- Umami 全站总访问量与访客数统计展示 -->
+<div class="umami-footer" style="text-align: center; padding: 4px 0; color: var(--secondary); font-size: 14px; margin-top: 2px;">
+  <span>总访问量 <span id="umami-site-pv">0</span> 次</span>
+  <span style="margin: 0 4px;">·</span>
+  <span>总访客数 <span id="umami-site-uv">0</span> 人</span>
+</div>
+
+<!-- Umami 全站总访问量与访客数自动获取与渲染 -->
+<script>
+
+  (function() {
+    const shareId = 'jHRsDJO1c5XHETnC';
+    const websiteId = '2eadbb12-0de2-4f05-926f-2185991592c0';
+    const pvEl = document.getElementById('umami-site-pv');
+    const uvEl = document.getElementById('umami-site-uv');
+
+    if (!pvEl && !uvEl) return;
+
+    // 优先读取本地 5 分钟缓存，避免翻页时频繁向 Umami 发请求
+    const cachedStats = sessionStorage.getItem('umami_site_stats');
+    if (cachedStats) {
+      try {
+        const data = JSON.parse(cachedStats);
+        if (pvEl) pvEl.textContent = data.pageviews || 0;
+        if (uvEl) uvEl.textContent = data.visitors || 0;
+        return;
+      } catch(e) {}
+    }
+
+    // 1. 获取公开只读 Token
+    fetch(`https://cloud.umami.is/api/share/${shareId}`)
+      .then(res => res.json())
+      .then(shareData => {
+        if (!shareData || !shareData.token) return;
+        const token = shareData.token;
+        const endAt = Date.now();
+        // 2. 查询全站总统计
+        return fetch(`https://cloud.umami.is/api/websites/${websiteId}/stats?startAt=0&endAt=${endAt}`, {
+          headers: { 'x-umami-share-token': token }
+        });
+      })
+      .then(res => res ? res.json() : null)
+      .then(stats => {
+        if (stats && stats.pageviews) {
+          const pv = stats.pageviews.value || 0;
+          const uv = (stats.visitors && stats.visitors.value) || 0;
+          if (pvEl) pvEl.textContent = pv;
+          if (uvEl) uvEl.textContent = uv;
+          sessionStorage.setItem('umami_site_stats', JSON.stringify({ pageviews: pv, visitors: uv }));
+        }
+      })
+      .catch(() => {});
+  })();
+</script>
