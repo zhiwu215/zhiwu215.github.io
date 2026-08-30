@@ -2278,3 +2278,11 @@ responsiveImages设为false关闭响应式图片{{<marginnote>}}默认情况：�
 我很少使用文章封面，所以没什么配置
 
 我看[这个博客](https://her-cat.com/posts/2025/10/08/hugo-paper-mod/#优化文章列表布局)还专门优化了布局，因为PaperMod 的文章列表默认是图片在上、文字在下。这个博客选了文字在左，封面在右的左右布局
+
+## 文章同步助手
+
+项目仓库：
+
+[wechatsync/Wechatsync: 一键同步文章到多个内容平台，支持今日头条、WordPress、知乎、简书、掘金、CSDN、typecho各大平台，一次发布，多平台同步发布。解放个人生产力](https://github.com/wechatsync/Wechatsync)
+
+这是浏览器的插件，可以帮你把文章同步到多个平台
