@@ -3,7 +3,6 @@ date = '2026-08-30T10:54:18+08:00'
 title = '解决claude code外接大模型使用WebFetch的问题'
 summary = '解决Unable to verify if domain xxx is safe to fetch. This may be due to network restrictions or enterprise security policies blocking claude.ai.'
 tags = ['claude code', 'agent']
-draft = false
 
 +++
 
