@@ -18,8 +18,6 @@ tags = ['claude code', 'agent']
 
 可以看到web_search和web_fetch这两个内置工具都是服务端工具，所以它们的执行都依赖 Anthropic 服务端
 
-> 在claude code泄露的源码中也可以看到使用的是这个sdk
-
 ![image-20260830111437074](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260830111437074.png)
 
 ### WebFetch工具
