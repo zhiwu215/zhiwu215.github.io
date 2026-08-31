@@ -2032,6 +2032,18 @@ PicGo是图片上传工具，Github充当图床
 
 ![image-20260813193508344](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260813193508344.png)
 
+### 图床使用jsdelivr作为CDN加速
+
+参考：[GitHub + jsDelivr + PicGo + Imagine 打造稳定快速、高效免费图床GitHub+jsDe - 掘金](https://juejin.cn/post/6844903993529860109#heading-5)
+
+**设定自定义域名**
+
+它的的作用是，在图片上传后，PicGo 会按照`自定义域名+上传的图片名`的方式生成访问链接，放到粘贴板上，因为我们要使用 `jsDelivr` 加速访问，所以可以设置为：
+
+https://cdn.jsdelivr.net/gh/用户名/图床仓库名
+
+![image-20260831174905521](../../../blog-img/image-20260831174905521.png)
+
 ### Typora配置
 
 手动上传图片，再粘贴链接太麻烦
