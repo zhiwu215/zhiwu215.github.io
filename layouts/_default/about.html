@@ -1,17 +1,20 @@
 {{- define "main" }}
 
-<header class="page-header">
-    <h1>{{ .Title }}</h1>
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">
+      {{ .Title }}
+    </h1>
     {{- if .Description }}
     <div class="post-description">
       {{ .Description }}
     </div>
     {{- end }}
-</header>
+  </header>
 
-<section>
-  <br>
-  {{ .Content }}
-</section>
+  <div class="post-content">
+    {{ .Content }}
+  </div>
+</article>
 
 {{- end }}{{/* end main */}}
