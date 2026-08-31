@@ -1392,15 +1392,22 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 **blank.css**
 
 ```css
-/* medium-zoom 图片放大的样式 */
+/* medium-zoom 图片放大的样式 (全平台通用层级) */
 .medium-zoom-overlay {
-  background: rgba(255, 255, 255, 0.5) !important;
+  background: rgba(255, 255, 255, 0.7) !important;
   z-index: 99999 !important;
 }
 .dark .medium-zoom-overlay {
-  background: rgba(0, 0, 0, 0.5) !important;
+  background: rgba(0, 0, 0, 0.7) !important;
 }
 
+/* 放大后的图片层级必须高于遮罩层 (z-index: 100000)，确保手机与桌面端均不会被遮挡 */
+.medium-zoom-image--opened {
+  z-index: 100000 !important;
+  position: relative;
+}
+
+/* Windows 系统专属自定义放大/缩小光标 */
 .win11 .medium-zoom-image {
   cursor: url(/cursors/zoom-in.svg), default !important;
 }
@@ -1409,8 +1416,6 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 }
 .win11 .medium-zoom-image--opened {
   cursor: url(/cursors/zoom-out.svg), default !important;
-  z-index: 100000 !important;
-  position: relative;
 }
 ```
 
