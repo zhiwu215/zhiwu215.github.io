@@ -111,7 +111,7 @@ enableGitInfo = true
 
   [[params.socialIcons]]
     name = "email"
-    url = "mailto:zhiwu215@gmail.com"
+    url = "mailto:zhiwu_215@qq.com"
 
 # ==========================================
 # 分类法 (Taxonomies) 配置
