@@ -2059,13 +2059,15 @@ PicGo是图片上传工具，Github充当图床
 
 ### 图床使用jsdelivr作为CDN加速
 
+> 我配置完之后试了一下，感觉是github更快，配置这个cdn加速反而更慢了，不知道是不是我的错觉
+
 参考：[GitHub + jsDelivr + PicGo + Imagine 打造稳定快速、高效免费图床GitHub+jsDe - 掘金](https://juejin.cn/post/6844903993529860109#heading-5)
 
 **设定自定义域名**
 
 它的的作用是，在图片上传后，PicGo 会按照`自定义域名+上传的图片名`的方式生成访问链接，放到粘贴板上，因为我们要使用 `jsDelivr` 加速访问，所以可以设置为：
 
-https://cdn.jsdelivr.net/gh/用户名/图床仓库名
+`https://cdn.jsdelivr.net/gh/用户名/图床仓库名`
 
 ![image-20260831174905521](../../../blog-img/image-20260831174905521.png)
 
