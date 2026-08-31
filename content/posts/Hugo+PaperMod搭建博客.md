@@ -477,34 +477,53 @@ series = ["配置博客"]
 
 ### 关于页面
 
-在添加归档页面和搜索页面的时候，直接写上`layout`就可以了，但是关于页面不行
+在添加归档页面和搜索页面的时候，直接在 Front Matter 中写上 `layout: "archives"` 或 `layout: "search"` 就可以了，但是关于页面不行。
 
-因为这个`layout`本质就是告诉了 Hugo：“去给我找一个叫做 `xxx` 的特殊模板来渲染这个页面”。但是，因为 PaperMod 主题目前**并没有**内置一个叫 `about.html` 的特殊模板
+因为 `layout` 的本质是告诉 Hugo：“去查找一个叫 `xxx.html` 的自定义模板来渲染当前页面”。但 PaperMod 主题**并未内置**专属于关于页的 `about.html` 模板。
 
-可以直接把关于页面当作一个普通文章写，但也可以自己定义html
+**制作关于页面主要有两种方案：**
 
-参考：[Hugo + PaperMod + Github Pages 搭建一个完善的个人博客(以 Windows11 为例) | SonnyCalcr's Blog](https://sonnycalcr.github.io/posts/build-a-blog-using-hugo-papermod-github-pages/#配置关于页面)
+**1.直接当普通文章写**：
 
-**layout/_default/about.html**
+直接在 `content/` 下创建 `about.md`
+
+缺点：会默认带上左上角嵌套面包屑导航（如 `首页 » 关于`）、发布日期与阅读时长、上一篇/下一篇翻页按钮，本质上看起来依然像一篇普通博文
+
+**2.自定义独立模板**：在 `layouts/_default/about.html` 创建独立模板
+
+> 我直接创建独立模板
+
+**layouts/_default/about.html**
 
 ```html
 {{- define "main" }}
 
-<header class="page-header">
-    <h1>{{ .Title }}</h1>
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">
+      {{ .Title }}
+    </h1>
     {{- if .Description }}
     <div class="post-description">
       {{ .Description }}
     </div>
     {{- end }}
-</header>
+  </header>
 
-<section>
-  <br>
-  {{ .Content }}
-</section>
+  <!-- 必须包含 md-content 类名，否则 Markdown 样式（段落与标题间距）将失效 -->
+  <div class="post-content md-content">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
+  </div>
 
-{{- end }}{{/* end main */}}
+  <!-- 可选：支持评论区（如 Giscus） -->
+  {{- if (.Param "comments") }}
+  {{- partial "comments.html" . }}
+  {{- end }}
+</article>
+
+{{- end }}
 ```
 
 **content/about.md**
@@ -515,8 +534,9 @@ title: "关于"
 layout: "about"
 ---
 
-这里就可以写一些关于的相关信息了。
+这里书写关于你的介绍信息
 ```
+
 
 ## 更好看（视觉美化）
 
