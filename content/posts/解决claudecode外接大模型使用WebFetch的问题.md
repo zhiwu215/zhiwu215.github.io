@@ -31,7 +31,7 @@ tags = ['claude code', 'agent']
 
 **既然如此，为什么WebFetch工具还会报错？**
 
-参考这个[知乎文章](https://zhuanlan.zhihu.com/p/2012819798686454483)下的评论区内容
+参考这个[知乎文章](https://zhuanlan.zhihu.com/p/2012819798686454483)下的评论：
 
 Claude Code 的 WebFetch 在发起实际 HTTP 请求前，会先向 claude.ai/ 发送域名安全预检请求。claude.ai 前面部署了 Cloudflare Bot Protection，从 headless CLI 发出的请求会被 Cloudflare 返回 403 JavaScript challenge，而 CLI 环境无法执行 JS，所以预检永远失败。**错误提示里说的 "network restrictions" 其实具有误导性——真正卡住的是 Anthropic 自己 CDN 上的 Cloudflare**
 
