@@ -8,7 +8,7 @@ tags = ['claude code', 'agent']
 
 ## 报错
 
-![image-20260830105836214](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260830105836214.png)
+![image-20260830105836214](https://cdn.jsdelivr.net/gh/zhiwu215/blog-img/image-20260830105836214.png)
 
 ## 原因
 
@@ -18,7 +18,7 @@ tags = ['claude code', 'agent']
 
 可以看到web_search和web_fetch这两个内置工具都是服务端工具，所以它们的执行都依赖 Anthropic 服务端
 
-![image-20260830111437074](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260830111437074.png)
+![image-20260830111437074](https://cdn.jsdelivr.net/gh/zhiwu215/blog-img/image-20260830111437074.png)
 
 ### WebFetch工具
 
@@ -39,7 +39,7 @@ Claude Code 的 WebFetch 在发起实际 HTTP 请求前，会先向 claude.ai/ �
 >
 > [数据使用 - Claude Code Docs](https://code.claude.com/docs/zh-CN/data-usage#webfetch-domain-safety-check)
 >
-> ![image-20260830135110887](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260830135110887.png)
+> ![image-20260830135110887](https://cdn.jsdelivr.net/gh/zhiwu215/blog-img/image-20260830135110887.png)
 
 ## 解决
 
@@ -47,7 +47,7 @@ Claude Code 的 WebFetch 在发起实际 HTTP 请求前，会先向 claude.ai/ �
 >
 > [Claude Code 设置 - Claude Code Docs](https://code.claude.com/docs/zh-CN/settings#available-settings)
 >
-> ![image-20260830135356568](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260830135356568.png)
+> ![image-20260830135356568](https://cdn.jsdelivr.net/gh/zhiwu215/blog-img/image-20260830135356568.png)
 
 **~/.claude/settings.json**
 
