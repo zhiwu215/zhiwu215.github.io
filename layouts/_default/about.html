@@ -12,9 +12,17 @@
     {{- end }}
   </header>
 
-  <div class="post-content">
-    {{ .Content }}
+  <div class="post-content md-content">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
   </div>
+
+  {{- if (.Param "comments") }}
+  {{- partial "comments.html" . }}
+  {{- end }}
 </article>
 
-{{- end }}{{/* end main */}}
+{{- end }}
+
+
