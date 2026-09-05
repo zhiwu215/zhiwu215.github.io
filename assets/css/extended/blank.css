@@ -12,9 +12,20 @@
 /* ==========================================
    全局应用：英文/数字用 JetBrains Mono，中文用 霞鹜文楷
    ========================================== */
-body {
+body,
+button,
+input,
+select,
+textarea {
     font-family: 'JetBrains Mono', 'LXGW WenKai', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-weight: normal;
+}
+
+/* 确保代码块交互组件（复制按钮、语言角标、展开折叠按钮）统一应用字体 */
+.copy-code,
+.code-lang-badge,
+.code-expand-btn {
+    font-family: 'JetBrains Mono', 'LXGW WenKai', sans-serif !important;
 }
 
 /* ==========================================
