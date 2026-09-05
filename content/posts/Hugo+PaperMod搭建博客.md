@@ -1329,7 +1329,7 @@ Hugo 内置的 Chroma 高亮引擎在解析包含 HTML 模板标签（如 `{{ if
 }
 
 .toc details summary {
-    cursor: zoom-in;
+    cursor: default;
     margin-inline-start: 20px;
     padding: 12px 0;
 }
