@@ -10,7 +10,7 @@ tags = ['debug', 'vscode']
 
 在问题面板，点击报错，会有**复制**和复制消息两个选项
 
-![image-20260905155710437](../../../blog-img/image-20260905155710437.png)
+![image-20260905155710437](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905155710437.png)
 
 # 「复制」的内容
 
