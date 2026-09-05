@@ -165,6 +165,11 @@ pygmentsUseClasses = true
     # 允许在 Markdown 中内嵌原生 HTML 代码（如 <br>、居中标签或视频/音频组件）
     unsafe = true
 
+  [markup.goldmark.parser.attribute]
+    # 开启块级属性解析（支持在代码块后写 {hl_lines=[...]} 等花括号参数）
+    block = true
+    title = true
+
   [markup.goldmark.extensions]
     # 关闭自动将文本链接化（防止将 xxx@xxx 等包版本号误判为邮箱链接）
     linkify = false

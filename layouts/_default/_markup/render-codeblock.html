@@ -1,7 +1,6 @@
 {{- $lang := .Type -}}
-{{- $attrs := .Attributes -}}
 <div class="code-block-wrapper" {{ if $lang }}data-lang="{{ $lang }}"{{ end }}>
-  {{- highlight .Inner $lang (transform.Remarshal "TOML" $attrs) -}}
+  {{- (transform.HighlightCodeBlock .).Wrapped -}}
   {{- if $lang -}}
   <span class="code-lang-badge">{{ $lang }}</span>
   {{- end -}}
