@@ -6,15 +6,13 @@ tags = ['electron', 'electron-vite']
 
 series=['electron-vite项目搭建']
 
-draft = true
-
 +++
 
 ## 官方文档
 
 [Installing Tailwind CSS with Vite - Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite)
 
-![image-20260905133404899](../../../blog-img/image-20260905133404899.png)
+![image-20260905133404899](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905133404899.png)
 
 ## 安装依赖
 
