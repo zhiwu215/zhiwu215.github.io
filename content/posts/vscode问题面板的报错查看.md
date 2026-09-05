@@ -8,11 +8,9 @@ tags = ['debug', 'vscode']
 
 # 界面
 
-在问题面板，点击报错
+在问题面板，点击报错，会有**复制**和复制消息两个选项
 
-会有复制和复制消息
-
-![img](https://i-blog.csdnimg.cn/direct/8483f08381004b22816e7d5c5ea56525.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)编辑
+![image-20260905155710437](../../../blog-img/image-20260905155710437.png)
 
 # 「复制」的内容
 
