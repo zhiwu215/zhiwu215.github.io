@@ -306,3 +306,73 @@ body {
     padding-top: 34px !important;
 }
 
+/* ==========================================
+   Diff 代码块整行光栏高亮 (Line Highlighting)
+   ========================================== */
+
+/* 1. 让代码容器与每一行能够 100% 铺满横向空间，支持横向滚动不截断 */
+.highlight pre.chroma code {
+    display: block !important;
+    min-width: 100%;
+    width: max-content;
+    box-sizing: border-box;
+}
+
+.highlight pre.chroma .line {
+    display: flex;
+    min-width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+}
+
+.highlight pre.chroma .line .cl {
+    flex: 1;
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+/* 2. 行号区右侧精细分隔线 */
+.chroma .lntable .lntd:first-child {
+    border-right: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+/* 3. 去除默认 span.gd / span.gi 的窄文字背景 */
+.chroma .gd,
+.chroma .gi {
+    background-color: transparent !important;
+}
+
+/* 4. 整行光栏背景与文字颜色 */
+.highlight pre.chroma .line:has(.gd) {
+    background-color: rgba(244, 63, 94, 0.2) !important;
+}
+.highlight pre.chroma .line:has(.gd) .cl,
+.highlight pre.chroma .line:has(.gd) .gd {
+    color: #f43f5e !important;
+}
+
+.highlight pre.chroma .line:has(.gi) {
+    background-color: rgba(16, 185, 129, 0.2) !important;
+}
+.highlight pre.chroma .line:has(.gi) .cl,
+.highlight pre.chroma .line:has(.gi) .gi {
+    color: #10b981 !important;
+}
+
+/* 5. 兼容不支持 :has() 伪类的旧版环境 */
+@supports not selector(:has(*)) {
+    .highlight pre.chroma .gd {
+        display: block;
+        width: 100%;
+        background-color: rgba(244, 63, 94, 0.2) !important;
+        color: #f43f5e !important;
+    }
+    .highlight pre.chroma .gi {
+        display: block;
+        width: 100%;
+        background-color: rgba(16, 185, 129, 0.2) !important;
+        color: #10b981 !important;
+    }
+}
+
+
