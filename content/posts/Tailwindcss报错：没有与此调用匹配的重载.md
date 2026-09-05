@@ -81,4 +81,31 @@ tailwindcss[具体issue](https://github.com/tailwindlabs/tailwindcss/issues/1880
 
 - 或直接断言 `tailwindcss() as any` 
 
+{{< tabs >}}
+
+{{< tab "ts指令注释">}}
+
+```typescript {hl_lines=[3 4]}
+plugins: [
+  react(),
+  // @ts-expect-error
+  tailwindcss()
+]
+```
+
+{{< /tab >}}
+
+{{< tab "断言">}}
+
+```typescript {hl_lines=[3]}
+plugins: [
+  react(),
+  tailwindcss() as any
+]
+```
+
+{{< /tab >}}
+
+{{< /tabs >}}
+
 这属于纯构建期的类型假阳性报警，完全不影响项目运行与打包
