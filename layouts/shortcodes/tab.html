@@ -1,0 +1,4 @@
+{{- $title := or (.Get "name") (.Get 0) "Tab" -}}
+<div class="code-tab-pane" data-tab-title="{{ $title }}" role="tabpanel">
+  {{- .Inner | markdownify -}}
+</div>

@@ -437,3 +437,98 @@ textarea {
 .post-content li > p {
     margin: 0;
 }
+
+/* ==========================================
+   多标签页代码块 (Code Tabs) 样式
+   ========================================== */
+.code-tabs {
+    position: relative;
+    margin-bottom: var(--content-gap);
+    border-radius: var(--radius);
+    background-color: var(--code-block-bg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+/* 标签导航栏 */
+.code-tabs-nav {
+    display: flex;
+    align-items: stretch;
+    background-color: rgba(0, 0, 0, 0.18);
+    border-bottom: 1px solid var(--border);
+    padding: 0 8px;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+.code-tabs-nav::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+/* 标签切换按钮 */
+.code-tab-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', 'LXGW WenKai', monospace !important;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--secondary);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+.code-tab-btn:hover {
+    color: var(--primary);
+}
+
+/* 激活标签样式 */
+.code-tab-btn.is-active {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* 激活标签下方的蓝紫色高亮线（还原截图效果） */
+.code-tab-btn.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #5b73e8;
+    z-index: 2;
+}
+
+/* 内容展示面板 */
+.code-tabs-content {
+    position: relative;
+}
+
+.code-tab-pane {
+    display: none;
+}
+
+.code-tab-pane.is-active {
+    display: block;
+}
+
+/* 融入 Tabs 内部的代码块样式重置 */
+.code-tabs .code-block-wrapper {
+    margin-bottom: 0 !important;
+}
+
+.code-tabs .highlight {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+.code-tabs .highlight pre {
+    border-radius: 0 !important;
+}

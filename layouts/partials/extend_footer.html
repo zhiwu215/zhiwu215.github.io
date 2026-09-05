@@ -34,65 +34,122 @@
   }
 </script>
 
-<!-- 超长代码块渐变遮罩与一键展开/收起 -->
+<!-- 超长代码块渐变遮罩与一键展开/收起 & 多标签页代码块 (Code Tabs) 交互 -->
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  // 1. 初始化超长代码折叠
+  function setupCodeCollapse(container) {
+    if (!container || container.querySelector('.code-mask-layer')) return;
     const CODE_MAX_HEIGHT = 320; // 超过 320px 视为超长代码块
 
-    document.querySelectorAll('.post-content .highlight').forEach((container) => {
-      if (container.querySelector('.code-mask-layer')) return;
+    // scrollHeight 为真实内容高度
+    if (container.scrollHeight > CODE_MAX_HEIGHT + 20) {
+      container.classList.add('code-collapsible');
 
-      // 此时尚未添加 code-collapsible 限高类，scrollHeight 即为真实内容高度
-      if (container.scrollHeight > CODE_MAX_HEIGHT + 20) {
-        container.classList.add('code-collapsible');
+      const maskLayer = document.createElement('div');
+      maskLayer.className = 'code-mask-layer';
 
-        const maskLayer = document.createElement('div');
-        maskLayer.className = 'code-mask-layer';
+      const expandBtn = document.createElement('button');
+      expandBtn.type = 'button';
+      expandBtn.className = 'code-expand-btn';
+      expandBtn.setAttribute('aria-label', '展开全部代码');
+      expandBtn.innerHTML = `
+        <span class="code-btn-text">展开全部代码</span>
+        <svg class="code-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      `;
 
-        const expandBtn = document.createElement('button');
-        expandBtn.type = 'button';
-        expandBtn.className = 'code-expand-btn';
-        expandBtn.setAttribute('aria-label', '展开全部代码');
-        expandBtn.innerHTML = `
-          <span class="code-btn-text">展开全部代码</span>
-          <svg class="code-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        `;
+      const btnText = expandBtn.querySelector('.code-btn-text');
+      const btnIcon = expandBtn.querySelector('.code-btn-icon');
 
-        const btnText = expandBtn.querySelector('.code-btn-text');
-        const btnIcon = expandBtn.querySelector('.code-btn-icon');
+      expandBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const willCollapse = container.classList.contains('is-expanded');
 
-        expandBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const willCollapse = container.classList.contains('is-expanded');
+        if (willCollapse) {
+          container.classList.remove('is-expanded');
+          btnText.textContent = '展开全部代码';
+          btnIcon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+          expandBtn.setAttribute('aria-label', '展开全部代码');
 
-          if (willCollapse) {
-            container.classList.remove('is-expanded');
-            btnText.textContent = '展开全部代码';
-            btnIcon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
-            expandBtn.setAttribute('aria-label', '展开全部代码');
-
-            // 收起后：如果代码块顶部已滚出视口上方，瞬间回到代码块位置
-            const rect = container.getBoundingClientRect();
-            if (rect.top < 0) {
-              window.scrollTo({
-                top: window.scrollY + rect.top - 16,
-                behavior: 'instant'
-              });
-            }
-          } else {
-            container.classList.add('is-expanded');
-            btnText.textContent = '收起代码';
-            btnIcon.innerHTML = '<polyline points="18 15 12 9 6 15"></polyline>';
-            expandBtn.setAttribute('aria-label', '收起代码');
+          // 收起后：如果代码块顶部已滚出视口上方，瞬间回到代码块位置
+          const rect = container.getBoundingClientRect();
+          if (rect.top < 0) {
+            window.scrollTo({
+              top: window.scrollY + rect.top - 16,
+              behavior: 'instant'
+            });
           }
+        } else {
+          container.classList.add('is-expanded');
+          btnText.textContent = '收起代码';
+          btnIcon.innerHTML = '<polyline points="18 15 12 9 6 15"></polyline>';
+          expandBtn.setAttribute('aria-label', '收起代码');
+        }
+      });
+
+      maskLayer.appendChild(expandBtn);
+      container.appendChild(maskLayer);
+    }
+  }
+
+  // 2. 初始化代码标签页 (Code Tabs)
+  function initCodeTabs() {
+    document.querySelectorAll('.code-tabs').forEach((tabsWrapper) => {
+      const nav = tabsWrapper.querySelector('.code-tabs-nav');
+      const panes = Array.from(tabsWrapper.querySelectorAll('.code-tab-pane'));
+      if (!nav || panes.length === 0) return;
+
+      // 防止重复初始化
+      if (nav.children.length > 0) return;
+
+      panes.forEach((pane, idx) => {
+        const title = pane.getAttribute('data-tab-title') || `Tab ${idx + 1}`;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-tab-btn' + (idx === 0 ? ' is-active' : '');
+        btn.setAttribute('role', 'tab');
+        btn.textContent = title;
+
+        btn.addEventListener('click', () => {
+          if (btn.classList.contains('is-active')) return;
+
+          // 切换按钮状态
+          nav.querySelectorAll('.code-tab-btn').forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+
+          // 切换 Pane 展示
+          panes.forEach((p, pIdx) => {
+            if (pIdx === idx) {
+              p.classList.add('is-active');
+              // 切换后检测超长代码折叠
+              p.querySelectorAll('.highlight').forEach(setupCodeCollapse);
+            } else {
+              p.classList.remove('is-active');
+            }
+          });
         });
 
-        maskLayer.appendChild(expandBtn);
-        container.appendChild(maskLayer);
-      }
+        nav.appendChild(btn);
+      });
+
+      // 默认激活第 0 个 pane
+      panes.forEach((pane, idx) => {
+        if (idx === 0) {
+          pane.classList.add('is-active');
+          pane.querySelectorAll('.highlight').forEach(setupCodeCollapse);
+        } else {
+          pane.classList.remove('is-active');
+        }
+      });
     });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // 初始化普通代码块的折叠
+    document.querySelectorAll('.post-content .highlight').forEach(setupCodeCollapse);
+    // 初始化多标签页代码块
+    initCodeTabs();
   });
 </script>
 
