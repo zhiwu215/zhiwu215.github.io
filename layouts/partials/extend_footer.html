@@ -151,6 +151,92 @@
     // 初始化多标签页代码块
     initCodeTabs();
   });
+
+  // 3. Diff 代码块智能复制：自动过滤删除行 (-)，并清洗新增行 (+) 开头符号
+  function getCleanDiffCode(codeblock) {
+    const lines = codeblock.querySelectorAll('.line');
+    if (lines && lines.length > 0) {
+      const result = [];
+      lines.forEach((line) => {
+        // 跳过删除行（含 .gd 标记的行）
+        if (line.querySelector('.gd')) return;
+
+        // 取得行文本，去除末尾换行（Hugo 生成的 textContent 每行自带 \n）
+        let text = line.textContent.replace(/\n$/, '');
+        // 新增行（含 .gi 标记）：去掉开头的 '+' 前缀，保留原始缩进
+        if (line.querySelector('.gi')) {
+          text = text.replace(/^\+( ?)/, '$1');
+        }
+        result.push(text);
+      });
+      return result.join('\n');
+    }
+
+    // 兜底正则处理（未生成 .line 标签时）
+    return codeblock.textContent
+      .split('\n')
+      .filter(line => !line.trimStart().startsWith('-'))
+      .map(line => line.replace(/^(\s*)\+( ?)/, '$1$2'))
+      .join('\n');
+  }
+
+  // 4. 查找代码块中实际的代码 <code> 元素（排除行号列）
+  function findCodeElement(container) {
+    // 表格布局：行号在第一个 td，代码在最后一个 td
+    const codeCell = container.querySelector('td.lntd:last-child code');
+    if (codeCell) return codeCell;
+    // 非表格布局
+    return container.querySelector('pre.chroma code') || container.querySelector('pre > code');
+  }
+
+  // 5. 捕获阶段拦截 .copy-code 点击，智能提取 Diff 可用代码
+  document.addEventListener('click', (e) => {
+    const copyBtn = e.target.closest('.copy-code');
+    if (!copyBtn) return;
+
+    // 查找对应的代码块容器
+    const wrapper = copyBtn.closest('.code-block-wrapper');
+    const container = copyBtn.closest('.highlight') || wrapper || copyBtn.parentNode;
+    if (!container) return;
+    const codeblock = findCodeElement(container);
+    if (!codeblock) return;
+
+    // 识别是否为 Diff 代码块
+    const isDiff = (wrapper && wrapper.dataset.lang === 'diff') ||
+                   codeblock.getAttribute('data-lang') === 'diff' ||
+                   codeblock.querySelector('.gd, .gi');
+
+    if (isDiff) {
+      // 拦截 PaperMod 自带的复制代码事件
+      e.stopImmediatePropagation();
+      e.preventDefault();
+
+      const cleanCode = getCleanDiffCode(codeblock);
+
+      function copyingDone() {
+        copyBtn.innerHTML = '已复制！';
+        setTimeout(() => {
+          copyBtn.innerHTML = '复制';
+        }, 2000);
+      }
+
+      if ('clipboard' in navigator) {
+        navigator.clipboard.writeText(cleanCode).then(copyingDone);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = cleanCode;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          copyingDone();
+        } catch (err) {}
+        document.body.removeChild(textarea);
+      }
+    }
+  }, true);
 </script>
 
 <!-- Vercount 站点底部总访问量与访客数统计 -->
