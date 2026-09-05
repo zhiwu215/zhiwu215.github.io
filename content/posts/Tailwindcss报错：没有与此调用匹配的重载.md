@@ -7,15 +7,13 @@ summary = '环境：electron-vite安装tailwindcss。报错：没有与此调用
 
 tags = ['tailwindcss']
 
-draft = true
-
 +++
 
 ## 报错
 
 背景：使用electron-vite构建项目，然后安装tailwindcss，在`electron.vite.config.ts`中配置插件
 
-![image-20260905142429766](../../../blog-img/image-20260905142429766.png)
+![image-20260905142429766](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905142429766.png)
 
 ## 类似issue
 
@@ -23,7 +21,7 @@ tailwindcss[具体issue](https://github.com/tailwindlabs/tailwindcss/issues/1880
 
 这个issue的作者使用SolidStart框架，然后安装@tailwindcss/vite：框架内部自带了一套 Vite 体系，而外部新安装的插件自带了另一套 Vite 体系
 
-![image-20260905150712623](../../../blog-img/image-20260905150712623.png)
+![image-20260905150712623](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905150712623.png)
 
 但我的项目中
 
@@ -31,7 +29,7 @@ tailwindcss[具体issue](https://github.com/tailwindlabs/tailwindcss/issues/1880
 
 **`Found 1 version of rollup`** （全工程也只有 **1** 个版本的 rollup，那就是 **`4.63.1`**）
 
-![image-20260905150557756](../../../blog-img/image-20260905150557756.png)
+![image-20260905150557756](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905150557756.png)
 
 ## 我的报错消息
 
