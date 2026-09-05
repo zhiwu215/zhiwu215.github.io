@@ -299,17 +299,17 @@ textarea {
 .code-lang-badge {
     position: absolute;
     top: 8px;
-    left: 12px; /* 放在左上角，避免与原生右侧复制按钮冲突 */
+    left: 12px;
     font-size: 12px;
     font-weight: bold;
     color: var(--secondary);
     background: var(--tertiary);
     padding: 2px 8px;
     border-radius: 4px;
-    text-transform: uppercase; /* 转大写字母 */
+    text-transform: uppercase;
     user-select: none;
     pointer-events: none;
-    opacity: 0.8;
+    z-index: 5; /* 确保层级置于代码与边框之上，避免被任何元素穿透 */
 }
 
 /* 为代码块顶部留出空间，避免文字与代码重叠（仅在有语言标签时） */
@@ -342,9 +342,38 @@ textarea {
     box-sizing: border-box;
 }
 
-/* 2. 行号区右侧精细分隔线 */
+/* 2. 行号区右侧精细分隔线（仅在代码行区域绘制，绝不穿透顶部语言标） */
 .chroma .lntable .lntd:first-child {
-    border-right: 1px solid rgba(128, 128, 128, 0.2);
+    border-right: none !important; /* 清除默认贯通到顶部的原生边框 */
+}
+
+.chroma .lntable .lntd:first-child pre {
+    position: relative;
+}
+
+/* 有语言标时：从 34px 处（第 1 行代码）才开始向下画线，顶部语言标区域完全不画线 */
+.code-block-wrapper[data-lang] .chroma .lntable .lntd:first-child pre::after {
+    content: '';
+    position: absolute;
+    top: 34px;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    background-color: rgba(128, 128, 128, 0.2);
+    pointer-events: none;
+}
+
+/* 无语言标时：正常从顶部开始画线 */
+.code-block-wrapper:not([data-lang]) .chroma .lntable .lntd:first-child pre::after,
+.chroma:not(.code-block-wrapper .chroma) .lntable .lntd:first-child pre::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    background-color: rgba(128, 128, 128, 0.2);
+    pointer-events: none;
 }
 
 /* 3. 去除默认 span.gd / span.gi 的窄文字背景 */
