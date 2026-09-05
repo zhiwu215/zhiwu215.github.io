@@ -8,7 +8,7 @@ tags = ['pnpm', '包管理器']
 
 ## 为什么会报错
 
-![image-20260905130150411](../../../blog-img/image-20260905130150411.png)
+![image-20260905130150411](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905130150411.png)
 
 官方文档：
 
@@ -22,7 +22,7 @@ tags = ['pnpm', '包管理器']
 
 这是一种安全措施，防止恶意包在安装时执行危险代码
 
-![image-20260905120307735](../../../blog-img/image-20260905120307735.png)
+![image-20260905120307735](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905120307735.png)
 
 ## 方法一：交互式审批
 
@@ -34,7 +34,7 @@ pnpm approve-builds
 
 选中需要放行的包，这条命令会自动生成 `pnpm‑workspace.yaml` 文件，写入白名单
 
-![image-20260905120900105](../../../blog-img/image-20260905120900105.png)
+![image-20260905120900105](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905120900105.png)
 
 **运行**
 
@@ -44,7 +44,7 @@ pnpm dev
 
 pnpm 在执行 dev 脚本之前，检测 lock‑file 有缺失的构建任务，在启动脚本前自动补发执行了被拦截的构建脚本
 
-![image-20260905121307479](../../../blog-img/image-20260905121307479.png)
+![image-20260905121307479](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905121307479.png)
 
 ## 方法二：手动新建 `pnpm‑workspace.yaml`
 
@@ -52,7 +52,7 @@ pnpm 在执行 dev 脚本之前，检测 lock‑file 有缺失的构建任务，
 >
 > [Build Settings | pnpm](https://pnpm.io/zh/settings/build#allowbuilds)
 >
-> ![image-20260905130643977](../../../blog-img/image-20260905130643977.png)
+> ![image-20260905130643977](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905130643977.png)
 
 **创建或修改`pnpm-workspace.yaml`**
 
