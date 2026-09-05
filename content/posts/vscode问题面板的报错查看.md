@@ -3,7 +3,6 @@ date = '2026-09-05T15:49:57+08:00'
 title = 'Vscode问题面板的报错查看'
 summary = ''
 tags = ['debug', 'vscode']
-draft = true
 
 +++
 
