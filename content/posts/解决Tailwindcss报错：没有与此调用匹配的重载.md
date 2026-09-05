@@ -1,7 +1,7 @@
 +++
 date = '2026-09-05T14:53:35+08:00'
 
-title = 'Tailwindcss报错：没有与此调用匹配的重载'
+title = '解决Tailwindcss报错：没有与此调用匹配的重载'
 
 summary = '环境：electron-vite安装tailwindcss。报错：没有与此调用匹配的重载'
 
