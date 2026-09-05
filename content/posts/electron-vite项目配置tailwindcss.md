@@ -2,7 +2,7 @@
 date = '2026-09-05T13:47:06+08:00'
 title = 'Electron Vite项目配置tailwindcss'
 summary = '配置tailwindcss'
-tags = ['electron', 'electron-vite']
+tags = ['electron-vite', 'tailwindcss']
 
 series=['electron-vite项目搭建']
 
