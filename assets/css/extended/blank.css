@@ -386,4 +386,25 @@ textarea {
     }
 }
 
+/* ==========================================
+   正文列表排版优化：适配 JetBrains Mono 等宽序号宽度与多级列表层次
+   ========================================== */
+.post-content ul {
+    padding-inline-start: 2rem !important;
+    margin: 0.8rem 0;
+}
 
+.post-content ol {
+    /* 等宽字体下“1. ”占宽约30px，给到2.8rem可使数字左边缘与无序列表圆点处于同一条舒适缩进线 */
+    padding-inline-start: 2.8rem !important;
+    margin: 0.8rem 0;
+}
+
+.post-content li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+}
+
+.post-content li > p {
+    margin: 0;
+}
