@@ -9,8 +9,6 @@ tags = ['electron-vite', 'shadcn/ui']
 
 series=['electron-vite项目搭建']
 
-draft = true
-
 +++
 
 ## 手动安装

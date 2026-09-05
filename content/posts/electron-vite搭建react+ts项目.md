@@ -6,8 +6,6 @@ tags = ['electron-vite']
 
 series=['electron-vite项目搭建']
 
-draft = true
-
 +++
 
 ## 搭建项目
