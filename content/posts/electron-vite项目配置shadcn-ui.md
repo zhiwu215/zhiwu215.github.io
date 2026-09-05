@@ -19,9 +19,9 @@ draft = true
 
 [Installation - shadcn/ui](https://ui.shadcn.com/docs/installation#choose-your-framework)
 
-![image-20260905182718557](../../../blog-img/image-20260905182718557.png)
+![image-20260905182718557](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905182718557.png)
 
-![image-20260905182813628](../../../blog-img/image-20260905182813628.png)
+![image-20260905182813628](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905182813628.png)
 
 ### 安装tailwindcss
 
@@ -40,25 +40,25 @@ pnpm add shadcn class-variance-authority cn lucide-react tw-animate-css
 - 普通纯前端 Vite 项目只有一套代码，@直接映射src很方便
 - 但 Electron‑vite 是三进程架构：Main 主进程 + Preload 预加载 + Renderer 渲染进程，三套代码放在同一个仓库根目录，共享一份根tsconfig.json
 
-![image-20260905183418117](../../../blog-img/image-20260905183418117.png)
+![image-20260905183418117](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905183418117.png)
 
 ### 配置style
 
-![image-20260905183454530](../../../blog-img/image-20260905183454530.png)
+![image-20260905183454530](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905183454530.png)
 
 和之前配置的tailwind css样式文件放在一起
 
-![image-20260905183709707](../../../blog-img/image-20260905183709707.png)
+![image-20260905183709707](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905183709707.png)
 
 ### 添加lib/utils.ts
 
 **src/renderer/src/lib/utils.ts**
 
-![image-20260905184016180](../../../blog-img/image-20260905184016180.png)
+![image-20260905184016180](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905184016180.png)
 
 ### 创建components.json文件
 
-![image-20260905184010581](../../../blog-img/image-20260905184010581.png)
+![image-20260905184010581](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905184010581.png)
 
 官方文档要求根目录下创建文件
 
@@ -98,4 +98,4 @@ pnpm add shadcn class-variance-authority cn lucide-react tw-animate-css
 
 官方文档下选择Manual，最后就能添加组件了
 
-![image-20260905191649052](../../../blog-img/image-20260905191649052.png)
+![image-20260905191649052](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20260905191649052.png)
