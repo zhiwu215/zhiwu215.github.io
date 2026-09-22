@@ -4,6 +4,7 @@ title = 'Hugo+PaperMod搭建博客'
 summary = '记录如何从零开始搭建个人博客，包含Hugo安装，PaperMod主题配置，giscus评论系统，图床等'
 tags = ['hugo', 'giscus', 'typora', '图床']
 series = ['博客搭建'] 
+
 +++
 
 > 提示：
@@ -32,7 +33,7 @@ series = ['博客搭建']
 - Package managers，包管理器
 - Build from source，从源代码开始构建
 
-> 我这里使用winget安装
+> 我这里使用winget安装，因为windows电脑自带这个
 
 ### 创建项目与目录结构
 
