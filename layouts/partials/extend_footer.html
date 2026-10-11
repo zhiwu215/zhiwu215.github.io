@@ -145,12 +145,41 @@
     });
   }
 
+  const CLIPBOARD_ICON = `<svg class="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+  const CHECK_ICON = `<svg class="check-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+
+  // 初始化代码块外观：将语言标签移入 .highlight 内并替换复制图标为剪贴板 SVG
+  function initCodeBlockUI() {
+    document.querySelectorAll('.post-content .highlight').forEach((container) => {
+      // 1. 将语言标签移动至 highlight 内部，确保统一右上角定位坐标系
+      const wrapper = container.closest('.code-block-wrapper');
+      if (wrapper) {
+        const badge = wrapper.querySelector(':scope > .code-lang-badge');
+        if (badge && !container.contains(badge)) {
+          container.appendChild(badge);
+        }
+      }
+
+      // 2. 将 PaperMod 默认的“复制”文本按钮替换为精美剪贴板图标
+      const copyBtn = container.querySelector('.copy-code');
+      if (copyBtn) {
+        copyBtn.setAttribute('title', '复制代码');
+        copyBtn.setAttribute('aria-label', '复制代码');
+        copyBtn.innerHTML = CLIPBOARD_ICON;
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     // 初始化普通代码块的折叠
     document.querySelectorAll('.post-content .highlight').forEach(setupCodeCollapse);
     // 初始化多标签页代码块
     initCodeTabs();
+    // 初始化代码块 UI（图标按钮与语言标签）
+    initCodeBlockUI();
   });
+  // 页面脚本即刻执行一次兜底
+  initCodeBlockUI();
 
   // 3. Diff 代码块智能复制：自动过滤删除行 (-)，并清洗新增行 (+) 开头符号
   function getCleanDiffCode(codeblock) {
@@ -189,7 +218,7 @@
     return container.querySelector('pre.chroma code') || container.querySelector('pre > code');
   }
 
-  // 5. 捕获阶段拦截 .copy-code 点击，智能提取 Diff 可用代码
+  // 5. 捕获阶段拦截所有 .copy-code 点击，呈现 Check 图标反馈并智能提取代码
   document.addEventListener('click', (e) => {
     const copyBtn = e.target.closest('.copy-code');
     if (!copyBtn) return;
@@ -201,40 +230,40 @@
     const codeblock = findCodeElement(container);
     if (!codeblock) return;
 
+    // 拦截 PaperMod 自带的文本“已复制！”覆盖
+    e.stopImmediatePropagation();
+    e.preventDefault();
+
     // 识别是否为 Diff 代码块
     const isDiff = (wrapper && wrapper.dataset.lang === 'diff') ||
                    codeblock.getAttribute('data-lang') === 'diff' ||
                    codeblock.querySelector('.gd, .gi');
 
-    if (isDiff) {
-      // 拦截 PaperMod 自带的复制代码事件
-      e.stopImmediatePropagation();
-      e.preventDefault();
+    const cleanCode = isDiff ? getCleanDiffCode(codeblock) : codeblock.textContent;
 
-      const cleanCode = getCleanDiffCode(codeblock);
+    function copyingDone() {
+      copyBtn.innerHTML = CHECK_ICON;
+      copyBtn.classList.add('is-copied');
+      setTimeout(() => {
+        copyBtn.innerHTML = CLIPBOARD_ICON;
+        copyBtn.classList.remove('is-copied');
+      }, 2000);
+    }
 
-      function copyingDone() {
-        copyBtn.innerHTML = '已复制！';
-        setTimeout(() => {
-          copyBtn.innerHTML = '复制';
-        }, 2000);
-      }
-
-      if ('clipboard' in navigator) {
-        navigator.clipboard.writeText(cleanCode).then(copyingDone);
-      } else {
-        const textarea = document.createElement('textarea');
-        textarea.value = cleanCode;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-          document.execCommand('copy');
-          copyingDone();
-        } catch (err) {}
-        document.body.removeChild(textarea);
-      }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(cleanCode).then(copyingDone);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = cleanCode;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        copyingDone();
+      } catch (err) {}
+      document.body.removeChild(textarea);
     }
   }, true);
 </script>

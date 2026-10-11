@@ -288,33 +288,149 @@ textarea {
 }
 
 /* ==========================================
-   代码块语言标签 (Language Badge)
+   VitePress 风格代码块：外层容器与可选标题栏 (File Path Header)
    ========================================== */
-/* 代码块外层容器 */
 .code-block-wrapper {
     position: relative;
     margin-bottom: var(--content-gap);
 }
-/* 标签样式绝对定位 */
-.code-lang-badge {
-    position: absolute;
-    top: 8px;
-    left: 12px;
-    font-size: 12px;
-    font-weight: bold;
-    color: var(--secondary);
-    background: var(--tertiary);
-    padding: 2px 8px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    user-select: none;
-    pointer-events: none;
-    z-index: 5; /* 确保层级置于代码与边框之上，避免被任何元素穿透 */
+
+/* 具有文件路径/标题时的卡片式容器 */
+.code-block-wrapper.has-title {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background-color: var(--code-block-bg);
+    overflow: hidden;
 }
 
-/* 为代码块顶部留出空间，避免文字与代码重叠（仅在有语言标签时） */
-.code-block-wrapper[data-lang] .highlight pre {
-    padding-top: 34px !important;
+.code-block-wrapper.has-title .highlight {
+    margin-bottom: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+.code-block-wrapper.has-title .highlight pre {
+    border-radius: 0 !important;
+}
+
+/* 顶部文件路径标题栏 */
+.code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 16px;
+    background-color: rgba(0, 0, 0, 0.16);
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+}
+
+[data-theme="light"] .code-block-header {
+    background-color: rgba(0, 0, 0, 0.035);
+}
+
+.code-block-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', 'LXGW WenKai', monospace !important;
+    font-size: 13px;
+    color: var(--secondary);
+    font-weight: 500;
+}
+
+.code-file-icon {
+    flex-shrink: 0;
+    color: var(--secondary);
+    opacity: 0.85;
+}
+
+.code-file-name {
+    color: var(--primary);
+    opacity: 0.9;
+}
+
+/* ==========================================
+   VitePress 风格代码块：右上角语言标签与复制图标协同
+   ========================================== */
+/* 语言标签：右上角静置展示，字号小巧，半透明 */
+.code-lang-badge {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    left: auto !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--secondary);
+    background: transparent !important;
+    padding: 0 !important;
+    text-transform: lowercase;
+    user-select: none;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+/* 兜底定位：未被移动进 .highlight 时的绝对定位 */
+.code-block-wrapper.has-title > .code-lang-badge {
+    top: 46px;
+}
+
+/* 复制按钮样式：精美剪贴板图标按钮（还原 VitePress 视觉） */
+.copy-code {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: rgba(128, 128, 128, 0.12);
+    color: var(--secondary);
+    cursor: pointer;
+    user-select: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    z-index: 6;
+}
+
+[data-theme="dark"] .copy-code {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.copy-code:hover {
+    color: var(--primary);
+    background-color: rgba(128, 128, 128, 0.22);
+    border-color: var(--tertiary);
+}
+
+.copy-code.is-copied {
+    color: #10b981 !important;
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+/* 核心切换动效：鼠标悬停在代码块时，语言标签隐藏，复制图标显现 */
+.highlight:hover .code-lang-badge,
+.code-block-wrapper:hover .code-lang-badge {
+    opacity: 0 !important;
+}
+
+.highlight:hover .copy-code,
+.code-block-wrapper:hover .copy-code {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* 右侧预留安全间距，避免超长首行代码与右上角按钮贴近 */
+.highlight pre {
+    padding-right: 48px !important;
 }
 
 /* ==========================================
@@ -342,30 +458,16 @@ textarea {
     box-sizing: border-box;
 }
 
-/* 2. 行号区右侧精细分隔线（仅在代码行区域绘制，绝不穿透顶部语言标） */
+/* 2. 行号区右侧精细分隔线 */
 .chroma .lntable .lntd:first-child {
-    border-right: none !important; /* 清除默认贯通到顶部的原生边框 */
+    border-right: none !important;
 }
 
 .chroma .lntable .lntd:first-child pre {
     position: relative;
 }
 
-/* 有语言标时：从 34px 处（第 1 行代码）才开始向下画线，顶部语言标区域完全不画线 */
-.code-block-wrapper[data-lang] .chroma .lntable .lntd:first-child pre::after {
-    content: '';
-    position: absolute;
-    top: 34px;
-    bottom: 0;
-    right: 0;
-    width: 1px;
-    background-color: rgba(128, 128, 128, 0.2);
-    pointer-events: none;
-}
-
-/* 无语言标时：正常从顶部开始画线 */
-.code-block-wrapper:not([data-lang]) .chroma .lntable .lntd:first-child pre::after,
-.chroma:not(.code-block-wrapper .chroma) .lntable .lntd:first-child pre::after {
+.chroma .lntable .lntd:first-child pre::after {
     content: '';
     position: absolute;
     top: 0;
