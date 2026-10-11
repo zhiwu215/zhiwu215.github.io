@@ -171,8 +171,8 @@ pygmentsUseClasses = true
     title = true
 
   [markup.goldmark.extensions]
-    # 关闭自动将文本链接化（防止将 xxx@xxx 等包版本号误判为邮箱链接）
-    linkify = false
+    # 开启自动将文本链接化（纯 URL 文本自动转换为可点击的超链接）
+    linkify = true
 
   # 代码高亮语法器设置 (Chroma)
   [markup.highlight]
