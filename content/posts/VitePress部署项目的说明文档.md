@@ -19,7 +19,7 @@ VitePress 是一个静态站点生成器 (SSG)，可以用来部署文档，比�
 
 > 不过博客我使用hugo部署
 >
-> 因为经常看些Vite、Vue、PPinia的说明文档，所以我也决定使用VitePress来部署项目的说明文档
+> 因为经常看些Vite、Vue、Pinia的说明文档，所以我也决定使用VitePress来部署项目的说明文档
 
 ![image-20261011181103249](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261011181103249.png)
 
