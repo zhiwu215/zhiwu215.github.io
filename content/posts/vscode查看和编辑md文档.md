@@ -27,19 +27,55 @@ tags = ['vscode', 'markdown']
 
 ![image-20261114104948239](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261114104948239.png)
 
-## 安装插件
+## 个人安装插件
 
-md的增强插件功能很多
+### Markdown All in One
+
+![image-20261115025358442](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261115025358442.png)
+
+**查看「细节」说明：**
+
+**键盘快捷键**：快速切换粗体、斜体、标题等
+
+**目录**：插入目录，并可在保存时自动更新
+
+**列表编辑**：使用 Tab 或退格调整缩进，自动添加有序列表编号
+
+**导出 HTML**
+
+**GitHub 风格 Markdown**：格式化表格
+
+**数学公式**
+
+**自动补全**：补全图片和文件路径、数学函数、引用链接
+
+**其他功能**：把选中的文字转换成链接
+
+> 我个人觉得加粗、标题级别设置、列表缩进等的快捷键很好用
+>
+> 所以安装这个插件
+
+### Markdown Preview Enhanced
+
+这是「细节」里的说明
+
+![image-20261115031845279](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261115031845279.png)
 
 可以在「细节」里面，直接跳转到[中文文档](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/)具体查看功能
 
 ![image-20261114105628114](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261114105628114.png)
 
-安装之后，右上角会多出来一个按钮
+> 我个人需要看mermaid图和plantuml图这些，所以用这个插件预览很方便
 
-点击可以进行分屏，左侧原文，右侧渲染
+## 可选插件
 
-![image-20261114161203122](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261114161203122.png)
+### markdownlint
+
+用来检查 Markdown 文档的格式规范和风格
+
+> 不过我不喜欢用，因为它会检查格式规范，有时候我就想要按照自己写法来，而不是写错了
+
+![image-20261115033332837](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261115033332837.png)
 
 ## 标点位置导致的渲染问题
 
