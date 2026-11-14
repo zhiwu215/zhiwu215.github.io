@@ -7,8 +7,6 @@ summary = '使用vscode安装插件和进行配置，用于查看、编辑markdo
 
 tags = ['vscode', 'markdown']
 
-draft = true
-
 +++
 
 ## vscode本身就能预览md文档
