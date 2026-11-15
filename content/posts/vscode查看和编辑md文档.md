@@ -12,9 +12,7 @@ tags = ['vscode', 'markdown']
 ## vscode本身就能预览md文档
 
 > vscode的官方文档
->
 > [Markdown and Visual Studio Code](https://code.visualstudio.com/docs/languages/markdown)
->
 > ![image-20261114103935992](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261114103935992.png)
 >
 > ![image-20261114104020110](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261114104020110.png)
@@ -76,6 +74,16 @@ tags = ['vscode', 'markdown']
 > 不过我不喜欢用，因为它会检查格式规范，有时候我就想要按照自己写法来，而不是写错了
 
 ![image-20261115033332837](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261115033332837.png)
+
+比如：
+
+如图，这里[toc]展示目录，这是插件的效果，这个lint插件识别不了
+
+还有我把内容加粗，它识别成当作标题，然后警告
+
+以及我多了一个空行，它也警告
+
+![image-20261115150542018](https://raw.githubusercontent.com/zhiwu215/blog-img/main/image-20261115150542018.png)
 
 ## 标点位置导致的渲染问题
 
